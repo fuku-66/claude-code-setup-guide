@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Claude Code セットアップガイド｜SHIFT AI 勉強会教材</title>
+<title>Claude Code セットアップガイド</title>
 <style>
   :root {
     --primary: #6366f1;
@@ -265,11 +265,9 @@
 
 <!-- ヘッダー -->
 <div class="header">
-  <div class="badge">SHIFT AI 勉強会教材</div>
   <h1>Claude Code セットアップガイド</h1>
-  <p>ターミナル未経験でも大丈夫。15分で完走できます。</p>
+  <p>ターミナル未経験でも大丈夫。このガイドの手順通りに進めれば完了できます。</p>
   <div class="header-meta">
-    <span>⏱ 所要時間 約15分</span>
     <span>💻 Windows / Mac対応</span>
     <span>📋 プログラミング経験不要</span>
   </div>
@@ -733,12 +731,14 @@
     document.getElementById('macBtn').classList.toggle('active', os === 'mac');
     document.body.classList.remove('win-mode', 'mac-mode');
     document.body.classList.add(os + '-mode');
-    // プレースホルダー非表示
     ['placeholder2','placeholder3'].forEach(id => {
       const el = document.getElementById(id);
       if (el) el.style.display = 'none';
     });
   }
+
+  // デフォルトでMacを選択済みにする
+  window.addEventListener('DOMContentLoaded', () => selectOS('mac'));
 
   function copyCode(btn, text) {
     navigator.clipboard.writeText(text).then(() => {
