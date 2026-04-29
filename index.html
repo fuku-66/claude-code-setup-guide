@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Code セットアップガイド｜SHIFT AI 勉強会教材</title>
+<style>
+  :root {
+    --primary: #6366f1;
+    --primary-dark: #4f46e5;
+    --primary-light: #e0e7ff;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --gray-50: #f9fafb;
+    --gray-100: #f3f4f6;
+    --gray-200: #e5e7eb;
+    --gray-500: #6b7280;
+    --gray-700: #374151;
+    --gray-900: #111827;
+    --win-color: #0078d4;
+    --radius: 12px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans JP', sans-serif;
+    color: var(--gray-900);
+    background: #f5f5f7;
+    line-height: 1.7;
+  }
+
+  /* ── ヘッダー ── */
+  .header {
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+    color: white;
+    padding: 48px 24px 40px;
+    text-align: center;
+  }
+  .header .badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.2);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 12px;
+    margin-bottom: 16px;
+    letter-spacing: 0.5px;
+  }
+  .header h1 { font-size: clamp(22px, 5vw, 30px); font-weight: 800; margin-bottom: 8px; }
+  .header p { font-size: 15px; opacity: 0.9; margin-bottom: 24px; }
+  .header-meta {
+    display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;
+    font-size: 13px; opacity: 0.85;
+  }
+
+  /* ── ゴールセクション ── */
+  .goal-section {
+    background: white;
+    border-bottom: 1px solid var(--gray-200);
+    padding: 40px 24px;
+    text-align: center;
+  }
+  .goal-label { font-size: 12px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--primary); font-weight: 700; margin-bottom: 12px; }
+  .goal-title { font-size: clamp(20px, 4vw, 26px); font-weight: 800; margin-bottom: 8px; }
+  .goal-sub { font-size: 14px; color: var(--gray-500); margin-bottom: 32px; }
+  .goal-steps {
+    display: flex; justify-content: center; align-items: center;
+    gap: 0; max-width: 620px; margin: 0 auto 32px; flex-wrap: wrap;
+  }
+  .goal-step {
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    flex: 1; min-width: 130px; padding: 18px 10px;
+    background: var(--gray-50); border: 1px solid var(--gray-200);
+    border-radius: var(--radius); margin: 4px;
+  }
+  .goal-step .icon { font-size: 26px; }
+  .goal-step .label { font-size: 13px; font-weight: 700; color: var(--gray-700); }
+  .goal-step .desc { font-size: 11px; color: var(--gray-500); text-align: center; line-height: 1.5; }
+  .goal-arrow { font-size: 18px; color: var(--gray-300); padding: 0 2px; }
+  .goal-terminal {
+    background: var(--gray-900); border-radius: var(--radius);
+    max-width: 480px; margin: 0 auto; text-align: left; overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  }
+  .terminal-bar {
+    background: #2d2d2d; padding: 10px 16px;
+    display: flex; gap: 6px; align-items: center;
+  }
+  .dot { width: 12px; height: 12px; border-radius: 50%; }
+  .dot-r { background: #ff5f57; } .dot-y { background: #febc2e; } .dot-g { background: #28c840; }
+  .terminal-label { font-size: 12px; color: #888; margin-left: 8px; font-family: monospace; }
+  .terminal-body { padding: 18px 22px; font-family: 'Menlo','Consolas',monospace; font-size: 13px; line-height: 2; }
+  .t-p { color: #6ee7b7; } .t-c { color: #e5e7eb; }
+  .t-o { color: #93c5fd; } .t-s { color: #86efac; } .t-d { color: #6b7280; }
+  .goal-caption { font-size: 12px; color: var(--gray-500); margin-top: 12px; }
+
+  /* ── OS スティッキーバー ── */
+  .os-bar {
+    position: sticky; top: 0; z-index: 100;
+    background: white; border-bottom: 1px solid var(--gray-200);
+    padding: 12px 24px;
+    display: flex; align-items: center; justify-content: center; gap: 16px;
+  }
+  .os-bar span { font-size: 13px; color: var(--gray-500); }
+  .os-btns { display: flex; gap: 8px; }
+  .os-btn {
+    padding: 8px 20px; border: 2px solid var(--gray-200);
+    border-radius: 8px; background: white; cursor: pointer;
+    font-size: 14px; font-weight: 600; transition: all 0.15s;
+  }
+  .os-btn.win.active { border-color: var(--win-color); background: #eff6ff; color: var(--win-color); }
+  .os-btn.mac.active { border-color: #555; background: #f9fafb; color: #333; }
+
+  /* ── メイン ── */
+  .main { max-width: 700px; margin: 0 auto; padding: 32px 24px 64px; }
+
+  /* ── OS別コンテンツ ── */
+  .win-only, .mac-only { display: none; }
+  body.win-mode .win-only { display: block; }
+  body.mac-mode .mac-only { display: block; }
+
+  /* ── OS未選択プレースホルダー ── */
+  .os-placeholder {
+    background: white; border: 2px dashed var(--gray-200);
+    border-radius: var(--radius); padding: 32px; text-align: center;
+    color: var(--gray-500); margin-bottom: 16px;
+  }
+
+  /* ── ステップ区切り ── */
+  .step-divider {
+    display: flex; align-items: center; gap: 16px;
+    margin: 40px 0 24px;
+  }
+  .step-divider-num {
+    display: flex; flex-direction: column; align-items: center;
+    flex-shrink: 0;
+  }
+  .step-divider-circle {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: var(--primary); color: white;
+    font-size: 18px; font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .step-divider-line {
+    width: 2px; height: 100%; background: var(--gray-200);
+  }
+  .step-divider-text h2 { font-size: 20px; font-weight: 800; }
+  .step-divider-text p { font-size: 14px; color: var(--gray-500); }
+
+  /* ── サブステップ ── */
+  .substep {
+    background: white; border: 1px solid var(--gray-200);
+    border-radius: var(--radius); padding: 24px 28px; margin-bottom: 16px;
+  }
+  .substep h3 {
+    font-size: 16px; font-weight: 700; margin-bottom: 14px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .substep h3 .sub-num {
+    display: inline-flex; width: 26px; height: 26px; border-radius: 50%;
+    background: var(--primary-light); color: var(--primary);
+    font-size: 12px; font-weight: 800;
+    align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .substep ol, .substep ul { padding-left: 20px; }
+  .substep li { margin-bottom: 8px; font-size: 15px; }
+  .substep p { font-size: 15px; margin-bottom: 10px; }
+
+  /* ── コードブロック ── */
+  .code-wrap { position: relative; margin: 14px 0; }
+  .code-block {
+    background: var(--gray-900); color: #e5e7eb;
+    border-radius: 8px; padding: 14px 18px;
+    font-family: 'Menlo','Consolas',monospace; font-size: 13px;
+    overflow-x: auto; line-height: 1.6; padding-right: 76px;
+    white-space: pre-wrap; word-break: break-all;
+  }
+  .copy-btn {
+    position: absolute; top: 8px; right: 8px;
+    background: var(--primary); color: white; border: none;
+    border-radius: 6px; padding: 5px 12px; font-size: 12px;
+    cursor: pointer; font-weight: 600; transition: background 0.15s;
+  }
+  .copy-btn:hover { background: var(--primary-dark); }
+  .copy-btn.copied { background: var(--success); }
+
+  /* ── ノートボックス ── */
+  .note {
+    border-radius: 8px; padding: 13px 16px; margin: 14px 0;
+    font-size: 14px; display: flex; gap: 10px; align-items: flex-start;
+  }
+  .note.warning { background: #fffbeb; border: 1px solid #fcd34d; }
+  .note.tip { background: #eff6ff; border: 1px solid #bfdbfe; }
+  .note.success { background: #f0fdf4; border: 1px solid #86efac; }
+  .note.danger { background: #fef2f2; border: 1px solid #fca5a5; }
+  .note-icon { font-size: 15px; flex-shrink: 0; margin-top: 2px; }
+  .note-body strong { display: block; margin-bottom: 3px; }
+
+  /* ── スクショ ── */
+  .screenshot {
+    margin: 14px 0; border-radius: 10px; overflow: hidden;
+    border: 1px solid var(--gray-200); box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .screenshot img { width: 100%; display: block; }
+  .screenshot-caption {
+    background: var(--gray-50); border-top: 1px solid var(--gray-200);
+    padding: 7px 14px; font-size: 12px; color: var(--gray-500);
+  }
+  .screenshot-caption::before { content: '▲ '; }
+
+  /* ── 折りたたみ ── */
+  details { border: 1px solid var(--gray-200); border-radius: 8px; margin: 12px 0; }
+  summary {
+    padding: 11px 16px; cursor: pointer; font-size: 14px; font-weight: 600;
+    color: var(--primary); background: var(--primary-light);
+    user-select: none; list-style: none;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary::before { content: '▶ '; font-size: 11px; }
+  details[open] summary::before { content: '▼ '; }
+  details .detail-body { padding: 16px; font-size: 14px; background: white; }
+
+  /* ── 完了カード ── */
+  .complete-card {
+    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+    color: white; border-radius: var(--radius);
+    padding: 32px; margin-top: 48px; text-align: center;
+  }
+  .complete-card h2 { font-size: 24px; margin-bottom: 8px; }
+  .complete-card p { opacity: 0.9; margin-bottom: 20px; }
+  .prompt-list {
+    background: rgba(255,255,255,0.15); border-radius: 8px;
+    padding: 16px; text-align: left; font-size: 14px;
+  }
+  .prompt-list p { margin-bottom: 6px; }
+  .prompt-list code {
+    background: rgba(255,255,255,0.2); padding: 2px 8px;
+    border-radius: 4px; font-family: monospace;
+  }
+
+  /* ── フッター ── */
+  .footer {
+    text-align: center; padding: 24px; color: var(--gray-500); font-size: 13px;
+  }
+
+  /* ── 連結ライン（ステップ間） ── */
+  .connector {
+    display: flex; justify-content: center; padding: 8px 0;
+  }
+  .connector-line {
+    width: 2px; height: 32px; background: var(--gray-200); border-radius: 1px;
+  }
+
+  @media (max-width: 600px) {
+    .header { padding: 32px 16px 28px; }
+    .main { padding: 20px 16px 48px; }
+    .substep { padding: 18px 16px; }
+    .os-bar { flex-direction: column; gap: 8px; }
+    .goal-steps { flex-direction: column; }
+    .goal-arrow { transform: rotate(90deg); }
+  }
+</style>
+</head>
+<body>
+
+<!-- ヘッダー -->
+<div class="header">
+  <div class="badge">SHIFT AI 勉強会教材</div>
+  <h1>Claude Code セットアップガイド</h1>
+  <p>ターミナル未経験でも大丈夫。15分で完走できます。</p>
+  <div class="header-meta">
+    <span>⏱ 所要時間 約15分</span>
+    <span>💻 Windows / Mac対応</span>
+    <span>📋 プログラミング経験不要</span>
+  </div>
+</div>
+
+<!-- ゴールセクション -->
+<div class="goal-section">
+  <p class="goal-label">このガイドのゴール</p>
+  <p class="goal-title">Claude Code を自分のPCで動かす</p>
+  <p class="goal-sub">アカウント作成からターミナル起動まで。3ステップで完走します。</p>
+
+  <div class="goal-steps">
+    <div class="goal-step">
+      <span class="icon">👤</span>
+      <span class="label">アカウント作成</span>
+      <span class="desc">claude.ai に登録<br>Pro プランに加入</span>
+    </div>
+    <span class="goal-arrow">→</span>
+    <div class="goal-step">
+      <span class="icon">💻</span>
+      <span class="label">環境を準備</span>
+      <span class="desc">Antigravity を入れて<br>ターミナルを開く</span>
+    </div>
+    <span class="goal-arrow">→</span>
+    <div class="goal-step">
+      <span class="icon">✅</span>
+      <span class="label">Claude Code 起動</span>
+      <span class="desc">コマンド1本で<br>インストール完了</span>
+    </div>
+  </div>
+
+  <div class="goal-terminal">
+    <div class="terminal-bar">
+      <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
+      <span class="terminal-label">Terminal — claude</span>
+    </div>
+    <div class="terminal-body">
+      <div><span class="t-p">$</span> <span class="t-c">claude --version</span></div>
+      <div><span class="t-o">1.0.25</span></div>
+      <div style="height:4px;"></div>
+      <div><span class="t-p">$</span> <span class="t-c">claude</span></div>
+      <div><span class="t-s">✓ Logged in as you@example.com</span></div>
+      <div><span class="t-d">╭──────────────────────────────╮</span></div>
+      <div><span class="t-d">│  Claude Code ready.          │</span></div>
+      <div><span class="t-d">╰──────────────────────────────╯</span></div>
+    </div>
+  </div>
+  <p class="goal-caption">▲ このゴール画面を目指してセットアップを進めます</p>
+</div>
+
+<!-- OS スティッキーバー -->
+<div class="os-bar">
+  <span>お使いのPCを選択：</span>
+  <div class="os-btns">
+    <button class="os-btn win" onclick="selectOS('win')" id="winBtn">🪟 Windows</button>
+    <button class="os-btn mac" onclick="selectOS('mac')" id="macBtn">🍎 Mac</button>
+  </div>
+</div>
+
+<!-- メインコンテンツ（1列スクロール） -->
+<div class="main">
+
+  <!-- ============================
+       STEP 1: アカウント作成（共通）
+  ============================= -->
+  <div class="step-divider">
+    <div class="step-divider-num">
+      <div class="step-divider-circle">1</div>
+    </div>
+    <div class="step-divider-text">
+      <h2>アカウント作成 & プラン加入</h2>
+      <p>Windows / Mac 共通の手順です</p>
+    </div>
+  </div>
+
+  <!-- 1-1 -->
+  <div class="substep">
+    <h3><span class="sub-num">1-1</span>アカウントを作りましょう</h3>
+    <ol>
+      <li>ブラウザで <strong>claude.ai</strong> を開く</li>
+      <li>「Sign up（新規登録）」をクリック</li>
+      <li>メールアドレスまたはGoogleアカウントで登録</li>
+      <li>届いたメールのリンクをクリックして認証完了</li>
+    </ol>
+    <div class="screenshot">
+      <img src="screenshots/win-01-claude-signup.png" alt="claude.aiのサインアップ画面">
+      <div class="screenshot-caption">claude.ai を開くとこの画面が表示されます</div>
+    </div>
+  </div>
+
+  <!-- 1-2 -->
+  <div class="substep">
+    <h3><span class="sub-num">1-2</span>Claude Pro に加入しましょう</h3>
+    <ol>
+      <li>claude.ai にログインした状態で、左下の「Upgrade」をクリック</li>
+      <li>Claude Pro（$20/月）を選択</li>
+      <li>クレジットカード情報を入力して契約完了</li>
+    </ol>
+    <div class="note tip">
+      <span class="note-icon">💡</span>
+      <div class="note-body">
+        <strong>なぜ有料プランが必要？</strong>
+        無料プランではClaude Codeが使えません。Pro（$20/月）が最低ラインです。
+      </div>
+    </div>
+  </div>
+
+  <div class="connector"><div class="connector-line"></div></div>
+
+  <!-- ============================
+       STEP 2: 環境準備
+  ============================= -->
+  <div class="step-divider">
+    <div class="step-divider-num">
+      <div class="step-divider-circle">2</div>
+    </div>
+    <div class="step-divider-text">
+      <h2>環境を準備する</h2>
+      <p>Antigravityをインストールして、ターミナルを開きます</p>
+    </div>
+  </div>
+
+  <!-- OS未選択プレースホルダー（Step 2） -->
+  <div id="placeholder2" class="os-placeholder">
+    <p style="font-size:18px; margin-bottom:8px;">⬆️</p>
+    <p>上の「Windows」または「Mac」を選んでください</p>
+    <p style="font-size:13px; margin-top:6px;">選ぶとあなたのOS専用の手順が表示されます</p>
+  </div>
+
+  <!-- Windows: Step 2 -->
+  <div class="win-only">
+    <!-- 2-1 Git -->
+    <div class="substep">
+      <h3><span class="sub-num">2-1</span>Gitをインストール（必須）</h3>
+      <div class="note danger">
+        <span class="note-icon">⚠️</span>
+        <div class="note-body">
+          <strong>Gitが入っていないと、Claude Codeのインストールが失敗します。</strong>
+          必ず先にGitを入れてください。
+        </div>
+      </div>
+      <p>Antigravityのターミナルで以下をコピペ → Enter：</p>
+      <div class="code-wrap">
+        <div class="code-block">winget install --id Git.Git -e --source winget</div>
+        <button class="copy-btn" onclick="copyCode(this,'winget install --id Git.Git -e --source winget')">コピー</button>
+      </div>
+      <p style="font-size:13px; color:var(--gray-500);">「すべてのソース契約条件に同意しますか？」と出たら <strong>Y</strong> を押してEnter。</p>
+      <details>
+        <summary>💡 このコマンドは何をしている？</summary>
+        <div class="detail-body">Windowsに標準搭載の winget（パッケージ管理ツール）を使い、Gitを公式ルートでインストールしています。GitはClaude Codeの動作に必要なコンポーネントを含んでいます。</div>
+      </details>
+    </div>
+
+    <!-- 2-2 Node.js -->
+    <div class="substep">
+      <h3><span class="sub-num">2-2</span>Node.jsをインストール</h3>
+      <p>Claude Codeの動作に必要なエンジンです。インストールするだけで、直接触ることはありません。</p>
+      <ol>
+        <li><strong>nodejs.org</strong> にアクセス</li>
+        <li>「Node.jsを入手」の大きなボタンをクリックしてダウンロード</li>
+        <li>ダウンロードしたファイルをダブルクリック</li>
+        <li>設定はすべてそのまま「Next」でOK → 「Install」→「Finish」</li>
+      </ol>
+      <div class="screenshot">
+        <img src="screenshots/win-07-nodejs-download.png" alt="nodejs.orgのダウンロードページ">
+        <div class="screenshot-caption">「Node.jsを入手」をクリック。LTS版（左下・緑色）が選ばれていればOK</div>
+      </div>
+    </div>
+
+    <!-- 2-3 Antigravity -->
+    <div class="substep">
+      <h3><span class="sub-num">2-3</span>Antigravityをインストール</h3>
+      <details style="margin-bottom:14px;">
+        <summary>💡 Antigravityって何？</summary>
+        <div class="detail-body">プログラマーが使うエディタの一種です。ターミナル（コマンドを打つ画面）が最初から内蔵されているので、別のアプリを用意する必要がありません。</div>
+      </details>
+      <ol>
+        <li><strong>antigravity.dev</strong> にアクセス</li>
+        <li>Windows版（.exe）をダウンロード</li>
+        <li>ダウンロードした .exe をダブルクリック</li>
+        <li>「このアプリがデバイスに変更を加えることを許可しますか？」→「はい」</li>
+        <li>インストール完了後、Antigravityを起動</li>
+      </ol>
+      <div class="screenshot">
+        <img src="screenshots/win-02-antigravity-top.png" alt="antigravity.devのダウンロードページ">
+        <div class="screenshot-caption">「Download for Windows」をクリック</div>
+      </div>
+      <div class="screenshot">
+        <img src="screenshots/win-03-antigravity-download.png" alt="ダウンロード選択画面">
+        <div class="screenshot-caption">Windows欄の「Download for x64」をクリック</div>
+      </div>
+      <div class="screenshot">
+        <img src="screenshots/win-06-antigravity-terminal.png" alt="ターミナルが表示された画面">
+        <div class="screenshot-caption">起動するとこの画面になります。下半分の「ターミナル」がコマンドを打つ場所です</div>
+      </div>
+      <details>
+        <summary>😣 ターミナルが表示されない場合</summary>
+        <div class="detail-body">メニューバーの「Terminal」→「New Terminal」をクリック、またはキーボードで <strong>Ctrl + `</strong>（Ctrlキー + バッククォート）を押してください。</div>
+      </details>
+    </div>
+  </div>
+
+  <!-- Mac: Step 2 -->
+  <div class="mac-only">
+    <div class="note success" style="margin-bottom:16px;">
+      <span class="note-icon">✅</span>
+      <div class="note-body">MacはGit不要です。macOSにはGitが最初から入っています。</div>
+    </div>
+
+    <!-- 2-1 Antigravity (Mac) -->
+    <div class="substep">
+      <h3><span class="sub-num">2-1</span>Antigravityをインストール</h3>
+      <details style="margin-bottom:14px;">
+        <summary>💡 Antigravityって何？</summary>
+        <div class="detail-body">プログラマーが使うエディタの一種です。ターミナルが内蔵されているので別アプリ不要です。</div>
+      </details>
+      <ol>
+        <li><strong>antigravity.dev</strong> にアクセス</li>
+        <li>Mac版（.dmg）をダウンロード</li>
+        <li>.dmg ファイルをダブルクリック</li>
+        <li>Antigravityアイコンを「Applications」フォルダにドラッグ＆ドロップ</li>
+        <li>Launchpad から Antigravity を起動</li>
+      </ol>
+      <div class="screenshot">
+        <img src="screenshots/02-antigravity-top.png" alt="antigravity.devのダウンロードページ（Mac）">
+        <div class="screenshot-caption">「Download for Mac」をクリック</div>
+      </div>
+      <div class="screenshot">
+        <img src="screenshots/04-antigravity-terminal.png" alt="ターミナルが表示された画面（Mac）">
+        <div class="screenshot-caption">下半分の「ターミナル」がコマンドを打つ場所です</div>
+      </div>
+      <details>
+        <summary>😣 「"Antigravity"は開発元が未確認」と出た場合</summary>
+        <div class="detail-body">「システム設定」→「プライバシーとセキュリティ」→ 下にスクロール →「このまま開く」をクリックしてください。</div>
+      </details>
+    </div>
+  </div>
+
+  <div class="connector"><div class="connector-line"></div></div>
+
+  <!-- ============================
+       STEP 3: Claude Code 起動
+  ============================= -->
+  <div class="step-divider">
+    <div class="step-divider-num">
+      <div class="step-divider-circle">3</div>
+    </div>
+    <div class="step-divider-text">
+      <h2>Claude Code を起動する</h2>
+      <p>コマンドをコピペするだけです</p>
+    </div>
+  </div>
+
+  <!-- OS未選択プレースホルダー（Step 3） -->
+  <div id="placeholder3" class="os-placeholder">
+    <p style="font-size:18px; margin-bottom:8px;">⬆️</p>
+    <p>上の「Windows」または「Mac」を選んでください</p>
+  </div>
+
+  <!-- Windows: Step 3 -->
+  <div class="win-only">
+    <!-- 3-1 インストール -->
+    <div class="substep">
+      <h3><span class="sub-num">3-1</span>Claude Codeをインストール</h3>
+      <p>Antigravityのターミナル（画面下部）をクリックしてカーソルを置き、コピーボタンで貼り付けてEnterを押してください。</p>
+      <div class="code-wrap">
+        <div class="code-block">irm https://claude.ai/install.ps1 | iex</div>
+        <button class="copy-btn" onclick="copyCode(this,'irm https://claude.ai/install.ps1 | iex')">コピー</button>
+      </div>
+      <div class="note success">
+        <span class="note-icon">✅</span>
+        <div class="note-body">成功の目印: <strong>Claude Code has been installed!</strong> と表示されたらOK</div>
+      </div>
+      <details>
+        <summary>😣 エラーが出た場合</summary>
+        <div class="detail-body">ターミナルの種類が「PowerShell」になっているか確認してください。ターミナル右上のドロップダウンで「PowerShell」を選択できます。</div>
+      </details>
+    </div>
+
+    <!-- 3-1b PATH設定 -->
+    <div class="substep">
+      <h3><span class="sub-num">3-1b</span>コマンドの場所をWindowsに教える（必須）</h3>
+      <p>インストールしただけでは <code style="background:var(--gray-100);padding:2px 6px;border-radius:4px;font-family:monospace;">claude</code> コマンドが認識されません。以下をコピペ → Enter：</p>
+      <div class="code-wrap">
+        <div class="code-block">[Environment]::SetEnvironmentVariable("Path", [Environment]::GetEnvironmentVariable("Path", "User") + ";$env:USERPROFILE\.local\bin", "User")</div>
+        <button class="copy-btn" onclick="copyCode(this,'[Environment]::SetEnvironmentVariable(\"Path\", [Environment]::GetEnvironmentVariable(\"Path\", \"User\") + \";$env:USERPROFILE\\.local\\bin\", \"User\")')">コピー</button>
+      </div>
+      <div class="note warning">
+        <span class="note-icon">⚠️</span>
+        <div class="note-body">
+          <strong>この後、Antigravityを一度完全に閉じてください。</strong>
+          アプリごと「×」で閉じる → もう一度起動する。こうしないと設定が反映されません。
+        </div>
+      </div>
+    </div>
+
+    <!-- 3-2 確認 -->
+    <div class="substep">
+      <h3><span class="sub-num">3-2</span>インストールできたか確認</h3>
+      <p>Antigravityを開き直してから、ターミナルに以下を入力：</p>
+      <div class="code-wrap">
+        <div class="code-block">claude --version</div>
+        <button class="copy-btn" onclick="copyCode(this,'claude --version')">コピー</button>
+      </div>
+      <div class="note success">
+        <span class="note-icon">✅</span>
+        <div class="note-body">成功の目印: <strong>1.0.25</strong> のような数字が表示されたらOK</div>
+      </div>
+      <details>
+        <summary>😣 「認識されません」と出た場合</summary>
+        <div class="detail-body">
+          <ol>
+            <li>Antigravityをアプリごと閉じて再起動する</li>
+            <li>それでもダメな場合、以下を実行：<br>
+            <code style="background:var(--gray-100);padding:4px 8px;border-radius:4px;font-family:monospace;display:block;margin-top:8px;">$env:PATH = "$env:USERPROFILE\.local\bin;$env:PATH"</code></li>
+          </ol>
+        </div>
+      </details>
+    </div>
+
+    <!-- 3-3 ログイン -->
+    <div class="substep">
+      <h3><span class="sub-num">3-3</span>ログイン</h3>
+      <div class="code-wrap">
+        <div class="code-block">claude</div>
+        <button class="copy-btn" onclick="copyCode(this,'claude')">コピー</button>
+      </div>
+      <ol>
+        <li>ブラウザが自動で開きます</li>
+        <li>Step 1で作ったアカウントでログイン</li>
+        <li>「Allow（許可）」をクリック</li>
+        <li>ブラウザは閉じてOK。Antigravityに戻ってください</li>
+      </ol>
+      <div class="screenshot">
+        <img src="screenshots/07-claude-allow.png" alt="「Allow」をクリック">
+        <div class="screenshot-caption">ログイン後、「Allow（許可）」をクリック</div>
+      </div>
+      <div class="screenshot">
+        <img src="screenshots/08-auth-success.png" alt="認証成功画面">
+        <div class="screenshot-caption">この画面が出たらブラウザは閉じてOK。Antigravityに戻りましょう</div>
+      </div>
+    </div>
+
+    <!-- 3-4 最初の一言 -->
+    <div class="substep">
+      <h3><span class="sub-num">3-4</span>最初の一言を打ちましょう</h3>
+      <div class="code-wrap">
+        <div class="code-block">こんにちは、私の名前は〇〇です。よろしくお願いします！</div>
+        <button class="copy-btn" onclick="copyCode(this,'こんにちは、私の名前は〇〇です。よろしくお願いします！')">コピー</button>
+      </div>
+      <p>日本語で返事が返ってきたらセットアップ完了です 🎉</p>
+      <div class="screenshot">
+        <img src="screenshots/11-claude-welcome.png" alt="Claude Codeが起動した画面">
+        <div class="screenshot-caption">この画面が出たらセットアップ完了です！</div>
+      </div>
+      <details>
+        <summary>😣 英語で返事が返ってくる場合</summary>
+        <div class="detail-body">「日本語で答えてください」と入力してください。</div>
+      </details>
+    </div>
+  </div>
+
+  <!-- Mac: Step 3 -->
+  <div class="mac-only">
+    <!-- 3-1 インストール -->
+    <div class="substep">
+      <h3><span class="sub-num">3-1</span>Claude Codeをインストール</h3>
+      <div class="code-wrap">
+        <div class="code-block">curl -fsSL https://claude.ai/install.sh | bash</div>
+        <button class="copy-btn" onclick="copyCode(this,'curl -fsSL https://claude.ai/install.sh | bash')">コピー</button>
+      </div>
+      <div class="note success">
+        <span class="note-icon">✅</span>
+        <div class="note-body">成功の目印: <strong>Claude Code has been installed!</strong> と表示されたらOK</div>
+      </div>
+    </div>
+
+    <!-- 3-2 確認 -->
+    <div class="substep">
+      <h3><span class="sub-num">3-2</span>インストールできたか確認</h3>
+      <p>ターミナルを一度閉じて開き直してから：</p>
+      <div class="code-wrap">
+        <div class="code-block">claude --version</div>
+        <button class="copy-btn" onclick="copyCode(this,'claude --version')">コピー</button>
+      </div>
+      <div class="note success">
+        <span class="note-icon">✅</span>
+        <div class="note-body">成功の目印: <strong>1.0.25</strong> のような数字が表示されたらOK</div>
+      </div>
+      <details>
+        <summary>😣 「command not found: claude」と出た場合</summary>
+        <div class="detail-body">ターミナルを閉じて開き直す。それでもダメなら：<br>
+        <code style="background:var(--gray-100);padding:4px 8px;border-radius:4px;font-family:monospace;display:block;margin-top:8px;">export PATH="$HOME/.local/bin:$PATH"</code></div>
+      </details>
+    </div>
+
+    <!-- 3-3 ログイン -->
+    <div class="substep">
+      <h3><span class="sub-num">3-3</span>ログイン</h3>
+      <div class="code-wrap">
+        <div class="code-block">claude</div>
+        <button class="copy-btn" onclick="copyCode(this,'claude')">コピー</button>
+      </div>
+      <ol>
+        <li>ブラウザが自動で開きます</li>
+        <li>Step 1で作ったアカウントでログイン</li>
+        <li>「Allow（許可）」をクリック</li>
+        <li>Antigravityに戻ってください</li>
+      </ol>
+      <div class="screenshot">
+        <img src="screenshots/06-claude-auth-login.png" alt="ブラウザでログイン画面">
+        <div class="screenshot-caption">ブラウザが開いてこのログイン画面が出ます</div>
+      </div>
+      <div class="screenshot">
+        <img src="screenshots/07-claude-allow.png" alt="「Allow」をクリック">
+        <div class="screenshot-caption">「Allow（許可）」をクリック</div>
+      </div>
+      <div class="screenshot">
+        <img src="screenshots/08-auth-success.png" alt="認証成功画面">
+        <div class="screenshot-caption">この画面が出たらブラウザは閉じてOK</div>
+      </div>
+    </div>
+
+    <!-- 3-4 最初の一言 -->
+    <div class="substep">
+      <h3><span class="sub-num">3-4</span>最初の一言を打ちましょう</h3>
+      <div class="code-wrap">
+        <div class="code-block">こんにちは、私の名前は〇〇です。よろしくお願いします！</div>
+        <button class="copy-btn" onclick="copyCode(this,'こんにちは、私の名前は〇〇です。よろしくお願いします！')">コピー</button>
+      </div>
+      <p>日本語で返事が返ってきたらセットアップ完了です 🎉</p>
+      <div class="screenshot">
+        <img src="screenshots/11-claude-welcome.png" alt="Claude Codeが起動した画面">
+        <div class="screenshot-caption">この画面が出たらセットアップ完了です！</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================
+       完了カード
+  ============================= -->
+  <div class="complete-card">
+    <h2>🎉 セットアップ完了！</h2>
+    <p>まず簡単なお願いから試してみましょう。</p>
+    <div class="prompt-list">
+      <p><code>自己紹介文をファイルに書いて保存して</code></p>
+      <p><code>今いるフォルダの中身を教えて</code></p>
+      <p><code>今週のTODOリストを5個考えてCSVで作って</code></p>
+    </div>
+    <p style="margin-top:20px; font-size:14px; opacity:0.85;">
+      終了するには <code style="background:rgba(255,255,255,0.2);padding:2px 8px;border-radius:4px;">/exit</code> または <strong>Ctrl+C を2回</strong>
+    </p>
+  </div>
+
+</div><!-- /main -->
+
+
+<script>
+  function selectOS(os) {
+    document.getElementById('winBtn').classList.toggle('active', os === 'win');
+    document.getElementById('macBtn').classList.toggle('active', os === 'mac');
+    document.body.classList.remove('win-mode', 'mac-mode');
+    document.body.classList.add(os + '-mode');
+    // プレースホルダー非表示
+    ['placeholder2','placeholder3'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.style.display = 'none';
+    });
+  }
+
+  function copyCode(btn, text) {
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = 'コピー済み';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+</script>
+</body>
+</html>
