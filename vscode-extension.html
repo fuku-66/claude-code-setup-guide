@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Code for VS Code 拡張機能ガイド</title>
+<style>
+  :root {
+    --primary: #6366f1;
+    --primary-dark: #4f46e5;
+    --primary-light: #e0e7ff;
+    --success: #10b981;
+    --gray-50: #f9fafb;
+    --gray-100: #f3f4f6;
+    --gray-200: #e5e7eb;
+    --gray-500: #6b7280;
+    --gray-700: #374151;
+    --gray-900: #111827;
+    --radius: 12px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans JP', sans-serif;
+    color: var(--gray-900);
+    background: #f5f5f7;
+    line-height: 1.7;
+  }
+
+  /* ── ヘッダー ── */
+  .header {
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+    color: white;
+    padding: 48px 24px 40px;
+    text-align: center;
+  }
+  .header h1 { font-size: clamp(20px, 5vw, 28px); font-weight: 800; margin-bottom: 8px; }
+  .header p { font-size: 15px; opacity: 0.9; margin-bottom: 24px; }
+  .header-meta {
+    display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;
+    font-size: 13px; opacity: 0.85;
+  }
+  .back-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    color: rgba(255,255,255,0.8); font-size: 13px; text-decoration: none;
+    margin-bottom: 20px;
+  }
+  .back-link:hover { color: white; }
+
+  /* ── メインコンテンツ ── */
+  .main { max-width: 720px; margin: 0 auto; padding: 32px 16px 60px; }
+
+  /* ── ステップ区切り ── */
+  .step-divider {
+    display: flex; align-items: center; gap: 16px;
+    background: white; border-radius: var(--radius);
+    padding: 20px 24px; margin-bottom: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  }
+  .step-divider-circle {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: var(--primary); color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 16px; flex-shrink: 0;
+  }
+  .step-divider h2 { font-size: 17px; font-weight: 800; margin-bottom: 2px; }
+  .step-divider p { font-size: 13px; color: var(--gray-500); }
+
+  /* ── サブステップ ── */
+  .substep {
+    background: white; border-radius: var(--radius);
+    padding: 24px; margin-bottom: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+  .substep h3 {
+    font-size: 15px; font-weight: 700; margin-bottom: 14px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .sub-num {
+    background: var(--primary-light); color: var(--primary-dark);
+    font-size: 11px; font-weight: 700; padding: 2px 8px;
+    border-radius: 20px; flex-shrink: 0;
+  }
+  .substep ol, .substep ul { padding-left: 20px; }
+  .substep li { margin-bottom: 6px; font-size: 14px; }
+  .substep p { font-size: 14px; margin-bottom: 10px; }
+
+  /* ── スクショ ── */
+  .screenshot {
+    background: var(--gray-50); border: 1px solid var(--gray-200);
+    border-radius: 10px; overflow: hidden; margin: 16px 0;
+  }
+  .screenshot img { width: 100%; display: block; }
+  .screenshot-caption {
+    padding: 8px 14px; font-size: 12px; color: var(--gray-500);
+    border-top: 1px solid var(--gray-200); background: white;
+  }
+  .screenshot-caption::before { content: "▲ "; }
+
+  /* ── ノート ── */
+  .note {
+    display: flex; gap: 10px; padding: 12px 14px;
+    border-radius: 8px; margin: 12px 0; font-size: 13px;
+  }
+  .note.success { background: #ecfdf5; border: 1px solid #6ee7b7; }
+  .note.tip { background: #eff6ff; border: 1px solid #93c5fd; }
+  .note-icon { flex-shrink: 0; font-size: 16px; }
+
+  /* ── コネクター ── */
+  .connector { display: flex; justify-content: center; padding: 4px 0; }
+  .connector-line { width: 2px; height: 24px; background: var(--gray-200); }
+
+  /* ── 完了バナー ── */
+  .complete-banner {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white; border-radius: var(--radius);
+    padding: 32px 24px; text-align: center; margin-top: 8px;
+  }
+  .complete-banner .icon { font-size: 40px; margin-bottom: 12px; }
+  .complete-banner h2 { font-size: 20px; font-weight: 800; margin-bottom: 8px; }
+  .complete-banner p { font-size: 14px; opacity: 0.9; }
+
+  /* ── details ── */
+  details { margin: 10px 0; }
+  summary {
+    cursor: pointer; font-size: 13px; color: var(--primary);
+    padding: 8px 12px; background: var(--primary-light);
+    border-radius: 6px; list-style: none; font-weight: 600;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary::before { content: "▶ "; font-size: 10px; }
+  details[open] summary::before { content: "▼ "; }
+  .detail-body { padding: 12px 14px; font-size: 13px; color: var(--gray-700); line-height: 1.7; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <a href="index.html" class="back-link">← セットアップガイドに戻る</a>
+  <h1>Claude Code for VS Code<br>拡張機能ガイド</h1>
+  <p>Antigravity（VS Code）に拡張機能を追加して、エディタ内でClaude Codeを使えるようにします</p>
+  <div class="header-meta">
+    <span>💻 Windows / Mac対応</span>
+    <span>⚡ Claude Codeセットアップ済みの方向け</span>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- Step 1 -->
+  <div class="step-divider">
+    <div class="step-divider-circle">1</div>
+    <div>
+      <h2>拡張機能を検索する</h2>
+      <p>Antigravityのマーケットプレースから探します</p>
+    </div>
+  </div>
+
+  <div class="substep">
+    <h3><span class="sub-num">1-1</span>マーケットプレースを開く</h3>
+    <ol>
+      <li>Antigravityを起動する</li>
+      <li>左サイドバーの<strong>ブロックのようなアイコン（拡張機能）</strong>をクリック</li>
+      <li>検索欄に <strong>Claude Code for VS Code</strong> と入力</li>
+      <li>Anthropic製のものを選択（赤枠のアイテム）</li>
+    </ol>
+    <div class="screenshot">
+      <img src="screenshots/vscode-01-search.png" alt="拡張機能の検索画面">
+      <div class="screenshot-caption">「Claude Code for VS Code」を検索して選択する</div>
+    </div>
+    <div class="note tip">
+      <span class="note-icon">💡</span>
+      <div class="note-body">同名の拡張機能が複数表示される場合があります。<strong>Anthropic</strong> 提供・星マーク付きのものを選んでください。</div>
+    </div>
+  </div>
+
+  <div class="connector"><div class="connector-line"></div></div>
+
+  <!-- Step 2 -->
+  <div class="step-divider">
+    <div class="step-divider-circle">2</div>
+    <div>
+      <h2>インストールする</h2>
+      <p>ボタンひとつで完了します</p>
+    </div>
+  </div>
+
+  <div class="substep">
+    <h3><span class="sub-num">2-1</span>インストールボタンをクリック</h3>
+    <ol>
+      <li>拡張機能の詳細ページが開いたら、<strong>「インストール」</strong>ボタンをクリック</li>
+      <li>しばらく待つ（数秒〜数十秒）</li>
+    </ol>
+    <div class="screenshot">
+      <img src="screenshots/vscode-02-install.png" alt="インストールボタンをクリック">
+      <div class="screenshot-caption">「インストール」ボタンをクリック</div>
+    </div>
+  </div>
+
+  <div class="substep">
+    <h3><span class="sub-num">2-2</span>インストール完了を確認</h3>
+    <p>ボタンが「アンインストール」に変わればインストール完了です。</p>
+    <div class="screenshot">
+      <img src="screenshots/vscode-03-installed.png" alt="インストール完了後の画面">
+      <div class="screenshot-caption">「アンインストール」表示に変わればOK</div>
+    </div>
+    <div class="note success">
+      <span class="note-icon">✅</span>
+      <div class="note-body">Antigravityの再起動を求められた場合は、一度閉じて再度起動してください。</div>
+    </div>
+  </div>
+
+  <div class="connector"><div class="connector-line"></div></div>
+
+  <!-- Step 3 -->
+  <div class="step-divider">
+    <div class="step-divider-circle">3</div>
+    <div>
+      <h2>使ってみる</h2>
+      <p>エディタ内からClaude Codeに話しかけられます</p>
+    </div>
+  </div>
+
+  <div class="substep">
+    <h3><span class="sub-num">3-1</span>エディタ内でClaude Codeを使う</h3>
+    <p>インストール後は、画面右上の<strong>Claudeアイコン</strong>またはエディタ下部の入力欄からClaude Codeに指示を出せます。</p>
+    <div class="screenshot">
+      <img src="screenshots/vscode-04-usage.png" alt="拡張機能の使用画面">
+      <div class="screenshot-caption">エディタ下部の「Ask Claude to edit...」から指示を入力できる</div>
+    </div>
+    <div class="note tip">
+      <span class="note-icon">💡</span>
+      <div class="note-body">
+        ターミナルのClaude Codeと同じアカウントで動作します。追加の設定は不要です。<br>
+        日本語で「〇〇を作って」「このコードを直して」と入力するだけでOKです。
+      </div>
+    </div>
+    <details>
+      <summary>💡 ターミナル版との違いは？</summary>
+      <div class="detail-body">
+        ターミナル版（<code>claude</code>コマンド）はファイル操作や複雑なタスクが得意です。<br>
+        拡張機能版はエディタで開いているファイルを直接編集させたい時に便利です。どちらも同じClaudeが動いています。
+      </div>
+    </details>
+  </div>
+
+  <!-- 完了バナー -->
+  <div class="complete-banner">
+    <div class="icon">🎉</div>
+    <h2>セットアップ完了！</h2>
+    <p>これでAntigravity（VS Code）内からClaude Codeが使えるようになりました。<br>エディタとターミナル、両方からAIを活用しましょう。</p>
+  </div>
+
+</div><!-- /main -->
+
+</body>
+</html>
