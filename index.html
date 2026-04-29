@@ -477,9 +477,25 @@
       <div class="note-body">MacはGit不要です。macOSにはGitが最初から入っています。</div>
     </div>
 
-    <!-- 2-1 Antigravity (Mac) -->
+    <!-- 2-1 Node.js (Mac) -->
     <div class="substep">
-      <h3><span class="sub-num">2-1</span>Antigravityをインストール</h3>
+      <h3><span class="sub-num">2-1</span>Node.jsをインストール</h3>
+      <p>Claude Codeの動作に必要なエンジンです。インストールするだけで、直接触ることはありません。</p>
+      <ol>
+        <li><strong>nodejs.org</strong> にアクセス</li>
+        <li>「Node.jsを入手」の大きなボタンをクリックしてダウンロード</li>
+        <li>ダウンロードした .pkg ファイルをダブルクリック</li>
+        <li>設定はすべてそのまま「続ける」→「インストール」→「閉じる」でOK</li>
+      </ol>
+      <div class="screenshot">
+        <img src="screenshots/win-07-nodejs-download.png" alt="nodejs.orgのダウンロードページ">
+        <div class="screenshot-caption">「Node.jsを入手」をクリック。LTS版が選ばれていればOK</div>
+      </div>
+    </div>
+
+    <!-- 2-2 Antigravity (Mac) -->
+    <div class="substep">
+      <h3><span class="sub-num">2-2</span>Antigravityをインストール</h3>
       <details style="margin-bottom:14px;">
         <summary>💡 Antigravityって何？</summary>
         <div class="detail-body">プログラマーが使うエディタの一種です。ターミナルが内蔵されているので別アプリ不要です。</div>
@@ -635,9 +651,14 @@
     <!-- 3-1 インストール -->
     <div class="substep">
       <h3><span class="sub-num">3-1</span>Claude Codeをインストール</h3>
+      <p>Antigravityのターミナル（画面下部）をクリックしてカーソルを置き、コピーボタンで貼り付けてEnterを押してください。</p>
       <div class="code-wrap">
         <div class="code-block">curl -fsSL https://claude.ai/install.sh | bash</div>
         <button class="copy-btn" onclick="copyCode(this,'curl -fsSL https://claude.ai/install.sh | bash')">コピー</button>
+      </div>
+      <div class="screenshot">
+        <img src="screenshots/mac-claude-install.png" alt="Claude Codeインストールコマンドを入力した画面">
+        <div class="screenshot-caption">ターミナルにコマンドを貼り付けてEnterを押す</div>
       </div>
       <div class="note success">
         <span class="note-icon">✅</span>
