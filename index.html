@@ -243,6 +243,34 @@
     text-align: center; padding: 24px; color: var(--gray-500); font-size: 13px;
   }
 
+  /* ── 動画ガイドカード ── */
+  .video-card {
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+    border-radius: var(--radius); padding: 18px;
+    margin-bottom: 20px; color: white;
+  }
+  .video-card .video-label {
+    font-size: 14px; font-weight: 700; margin-bottom: 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .video-frame {
+    position: relative; padding-bottom: 56.25%; height: 0;
+    border-radius: 8px; overflow: hidden; background: #000;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+  .video-frame iframe {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    border: none;
+  }
+  .video-card .video-link {
+    display: inline-block; margin-top: 12px;
+    background: rgba(255,255,255,0.95); color: var(--primary-dark);
+    padding: 8px 16px; border-radius: 6px;
+    font-size: 13px; font-weight: 700; text-decoration: none;
+    transition: background 0.15s;
+  }
+  .video-card .video-link:hover { background: white; }
+
   /* ── 連結ライン（ステップ間） ── */
   .connector {
     display: flex; justify-content: center; padding: 8px 0;
@@ -404,6 +432,15 @@
 
   <!-- Windows: Step 2 -->
   <div class="win-only">
+    <!-- 動画ガイド（Windows） -->
+    <div class="video-card">
+      <div class="video-label">🎥 動画で見ながら進めたい方はこちら（Windows版）</div>
+      <div class="video-frame">
+        <iframe src="https://drive.google.com/file/d/1EjCRA2Z3nSY3PV6NC1JUgRd23bRldd8u/preview" allow="autoplay" allowfullscreen></iframe>
+      </div>
+      <a class="video-link" href="https://drive.google.com/file/d/1EjCRA2Z3nSY3PV6NC1JUgRd23bRldd8u/view" target="_blank" rel="noopener">▶ 別タブで動画を開く</a>
+    </div>
+
     <!-- 2-1 Git -->
     <div class="substep">
       <h3><span class="sub-num">2-1</span>Gitをインストール（必須）</h3>
@@ -481,6 +518,15 @@
 
   <!-- Mac: Step 2 -->
   <div class="mac-only">
+    <!-- 動画ガイド（Mac） -->
+    <div class="video-card">
+      <div class="video-label">🎥 動画で見ながら進めたい方はこちら（Mac版）</div>
+      <div class="video-frame">
+        <iframe src="https://drive.google.com/file/d/1SJciKoUHOR59r_1bTi68KBfG7b_i9LaH/preview" allow="autoplay" allowfullscreen></iframe>
+      </div>
+      <a class="video-link" href="https://drive.google.com/file/d/1SJciKoUHOR59r_1bTi68KBfG7b_i9LaH/view" target="_blank" rel="noopener">▶ 別タブで動画を開く</a>
+    </div>
+
     <div class="note success" style="margin-bottom:16px;">
       <span class="note-icon">✅</span>
       <div class="note-body">MacはGit不要です。macOSにはGitが最初から入っています。</div>
@@ -602,12 +648,14 @@
         <div class="note-body">成功の目印: <strong>1.0.25</strong> のような数字が表示されたらOK</div>
       </div>
       <details>
-        <summary>😣 「認識されません」と出た場合</summary>
+        <summary>😣 「認識されません」と出た場合（Windowsで一番多い詰まりポイント）</summary>
         <div class="detail-body">
+          <p><strong>原因の9割はPATHが通っていないこと</strong>です。以下の順番で試してください。</p>
           <ol>
-            <li>Antigravityをアプリごと閉じて再起動する</li>
-            <li>それでもダメな場合、以下を実行：<br>
+            <li>Antigravityをアプリごと「×」で閉じて再起動する（これで直る人が一番多い）</li>
+            <li>それでもダメなら、ターミナルで以下を実行：<br>
             <code style="background:var(--gray-100);padding:4px 8px;border-radius:4px;font-family:monospace;display:block;margin-top:8px;">$env:PATH = "$env:USERPROFILE\.local\bin;$env:PATH"</code></li>
+            <li><strong>💡 一番ラクな裏技</strong>：Antigravityの<strong>右側のAIチャット</strong>に、ターミナルに出ているエラーメッセージをコピペして「<strong>PATHが通っていないみたいなので直してください</strong>」と伝える → AIが環境に合わせた修正コマンドを提案してくれます。コマンドの意味がわからなくても大丈夫。</li>
           </ol>
         </div>
       </details>
@@ -615,13 +663,15 @@
 
     <!-- 3-3 ログイン -->
     <div class="substep">
-      <h3><span class="sub-num">3-3</span>ログイン</h3>
+      <h3><span class="sub-num">3-3</span>Claude Codeを起動してログイン</h3>
+      <p>下のコマンドを打つと <strong>Claude Code本体が起動</strong> します。初回起動時だけブラウザが自動で開いて、認証（ログイン）を求められます。</p>
       <div class="code-wrap">
         <div class="code-block">claude</div>
         <button class="copy-btn" onclick="copyCode(this,'claude')">コピー</button>
       </div>
+      <p style="margin-top:12px;"><strong>↓ Enterを押すとブラウザが立ち上がります</strong></p>
       <ol>
-        <li>ブラウザが自動で開きます</li>
+        <li>ブラウザが自動で開く（開かない場合はターミナルに表示されたURLをコピーしてブラウザに貼り付け）</li>
         <li>Step 1で作ったアカウントでログイン</li>
         <li>「Allow（許可）」をクリック</li>
         <li>ブラウザは閉じてOK。Antigravityに戻ってください</li>
@@ -696,13 +746,15 @@
 
     <!-- 3-3 ログイン -->
     <div class="substep">
-      <h3><span class="sub-num">3-3</span>ログイン</h3>
+      <h3><span class="sub-num">3-3</span>Claude Codeを起動してログイン</h3>
+      <p>下のコマンドを打つと <strong>Claude Code本体が起動</strong> します。初回起動時だけブラウザが自動で開いて、認証（ログイン）を求められます。</p>
       <div class="code-wrap">
         <div class="code-block">claude</div>
         <button class="copy-btn" onclick="copyCode(this,'claude')">コピー</button>
       </div>
+      <p style="margin-top:12px;"><strong>↓ Enterを押すとブラウザが立ち上がります</strong></p>
       <ol>
-        <li>ブラウザが自動で開きます</li>
+        <li>ブラウザが自動で開く（開かない場合はターミナルに表示されたURLをコピーしてブラウザに貼り付け）</li>
         <li>Step 1で作ったアカウントでログイン</li>
         <li>「Allow（許可）」をクリック</li>
         <li>Antigravityに戻ってください</li>
