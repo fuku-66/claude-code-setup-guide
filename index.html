@@ -433,14 +433,6 @@
   <!-- Windows: Step 2 -->
   <div class="win-only">
     <!-- 動画ガイド（Windows） -->
-    <div class="video-card">
-      <div class="video-label">🎥 動画で見ながら進めたい方はこちら（Windows版）</div>
-      <div class="video-frame">
-        <iframe src="https://drive.google.com/file/d/1EjCRA2Z3nSY3PV6NC1JUgRd23bRldd8u/preview" allow="autoplay" allowfullscreen></iframe>
-      </div>
-      <a class="video-link" href="https://drive.google.com/file/d/1EjCRA2Z3nSY3PV6NC1JUgRd23bRldd8u/view" target="_blank" rel="noopener">▶ 別タブで動画を開く</a>
-    </div>
-
     <!-- 2-1 Git -->
     <div class="substep">
       <h3><span class="sub-num">2-1</span>Gitをインストール（必須）</h3>
@@ -519,14 +511,6 @@
   <!-- Mac: Step 2 -->
   <div class="mac-only">
     <!-- 動画ガイド（Mac） -->
-    <div class="video-card">
-      <div class="video-label">🎥 動画で見ながら進めたい方はこちら（Mac版）</div>
-      <div class="video-frame">
-        <iframe src="https://drive.google.com/file/d/1SJciKoUHOR59r_1bTi68KBfG7b_i9LaH/preview" allow="autoplay" allowfullscreen></iframe>
-      </div>
-      <a class="video-link" href="https://drive.google.com/file/d/1SJciKoUHOR59r_1bTi68KBfG7b_i9LaH/view" target="_blank" rel="noopener">▶ 別タブで動画を開く</a>
-    </div>
-
     <div class="note success" style="margin-bottom:16px;">
       <span class="note-icon">✅</span>
       <div class="note-body">MacはGit不要です。macOSにはGitが最初から入っています。</div>
@@ -647,18 +631,19 @@
         <span class="note-icon">✅</span>
         <div class="note-body">成功の目印: <strong>1.0.25</strong> のような数字が表示されたらOK</div>
       </div>
-      <details>
-        <summary>😣 「認識されません」と出た場合（Windowsで一番多い詰まりポイント）</summary>
-        <div class="detail-body">
-          <p><strong>原因の9割はPATHが通っていないこと</strong>です。以下の順番で試してください。</p>
-          <ol>
+      <div class="note warning" style="margin-top:16px;">
+        <span class="note-icon">😣</span>
+        <div class="note-body">
+          <strong>「認識されません」と出た場合（Windowsで一番多い詰まりポイント）</strong>
+          <p style="margin-top:12px;"><strong>原因の9割はPATHが通っていないこと</strong>です。以下の順番で試してください。</p>
+          <ol style="margin-top:8px;">
             <li>Antigravityをアプリごと「×」で閉じて再起動する（これで直る人が一番多い）</li>
             <li>それでもダメなら、ターミナルで以下を実行：<br>
             <code style="background:var(--gray-100);padding:4px 8px;border-radius:4px;font-family:monospace;display:block;margin-top:8px;">$env:PATH = "$env:USERPROFILE\.local\bin;$env:PATH"</code></li>
             <li><strong>💡 一番ラクな裏技</strong>：Antigravityの<strong>右側のAIチャット</strong>に、ターミナルに出ているエラーメッセージをコピペして「<strong>PATHが通っていないみたいなので直してください</strong>」と伝える → AIが環境に合わせた修正コマンドを提案してくれます。コマンドの意味がわからなくても大丈夫。</li>
           </ol>
         </div>
-      </details>
+      </div>
     </div>
 
     <!-- 3-3 ログイン -->
@@ -683,6 +668,9 @@
       <div class="screenshot">
         <img src="screenshots/08-auth-success.png" alt="認証成功画面">
         <div class="screenshot-caption">この画面が出たらブラウザは閉じてOK。Antigravityに戻りましょう</div>
+      </div>
+      <div class="note" style="background:var(--gray-50); border-left:4px solid var(--primary); margin-top:20px;">
+        <span style="font-size:12px; color:var(--gray-500);">💡 <strong>補足：</strong><a href="https://drive.google.com/file/d/1EjCRA2Z3nSY3PV6NC1JUgRd23bRldd8u/view" target="_blank" rel="noopener">動画で見ながら進めたい方はこちら</a></span>
       </div>
     </div>
 
@@ -737,11 +725,14 @@
         <span class="note-icon">✅</span>
         <div class="note-body">成功の目印: <strong>1.0.25</strong> のような数字が表示されたらOK</div>
       </div>
-      <details>
-        <summary>😣 「command not found: claude」と出た場合</summary>
-        <div class="detail-body">ターミナルを閉じて開き直す。それでもダメなら：<br>
-        <code style="background:var(--gray-100);padding:4px 8px;border-radius:4px;font-family:monospace;display:block;margin-top:8px;">export PATH="$HOME/.local/bin:$PATH"</code></div>
-      </details>
+      <div class="note warning" style="margin-top:16px;">
+        <span class="note-icon">😣</span>
+        <div class="note-body">
+          <strong>「command not found: claude」と出た場合</strong><br>
+          ターミナルを閉じて開き直す。それでもダメなら：
+          <code style="background:var(--gray-100);padding:4px 8px;border-radius:4px;font-family:monospace;display:block;margin-top:8px;">export PATH="$HOME/.local/bin:$PATH"</code>
+        </div>
+      </div>
     </div>
 
     <!-- 3-3 ログイン -->
@@ -770,6 +761,9 @@
       <div class="screenshot">
         <img src="screenshots/08-auth-success.png" alt="認証成功画面">
         <div class="screenshot-caption">この画面が出たらブラウザは閉じてOK</div>
+      </div>
+      <div class="note" style="background:var(--gray-50); border-left:4px solid var(--primary); margin-top:20px;">
+        <span style="font-size:12px; color:var(--gray-500);">💡 <strong>補足：</strong><a href="https://drive.google.com/file/d/1SJciKoUHOR59r_1bTi68KBfG7b_i9LaH/view" target="_blank" rel="noopener">動画で見ながら進めたい方はこちら</a></span>
       </div>
     </div>
 
