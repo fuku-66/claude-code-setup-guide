@@ -654,8 +654,12 @@
             <li>Antigravityをアプリごと「×」で閉じて再起動する（これで直る人が一番多い）</li>
             <li>それでもダメなら、ターミナルで以下を実行：<br>
             <code style="background:var(--gray-100);padding:4px 8px;border-radius:4px;font-family:monospace;display:block;margin-top:8px;">$env:PATH = "$env:USERPROFILE\.local\bin;$env:PATH"</code></li>
-            <li><strong>💡 一番ラクな裏技</strong>：Antigravityの<strong>右側のAIチャット</strong>に、ターミナルに出ているエラーメッセージをコピペして「<strong>PATHが通っていないみたいなので直してください</strong>」と伝える → AIが環境に合わせた修正コマンドを提案してくれます。コマンドの意味がわからなくても大丈夫。</li>
+            <li><strong>💡 一番ラクな裏技</strong>：Antigravityの<strong>右側のAIチャット</strong>に、ターミナルに出ているエラーメッセージをコピペして「<strong>パスが通っていません</strong>」と伝える → AIが環境に合わせた修正コマンドを提案してくれます。コマンドの意味がわからなくても大丈夫。</li>
           </ol>
+          <div class="screenshot" style="margin-top:14px;">
+            <img src="screenshots/path-error-chat.png" alt="Antigravity IDEのAgentチャットにパスエラーを入力している画面">
+            <div class="screenshot-caption">右側のAgentチャット欄に「パスが通っていません」と入力して送信する</div>
+          </div>
         </div>
       </div>
     </div>
@@ -834,6 +838,10 @@
       <li>zip を<strong>ダブルクリックで展開</strong>（解凍）する</li>
       <li>展開してできたフォルダの<strong>中身をすべてコピー</strong>して、4-1 で作った作業フォルダに貼り付ける</li>
     </ol>
+    <div class="screenshot" style="margin-top:14px;">
+      <img src="screenshots/skills-folder-setup.png" alt="Antigravity IDEのエクスプローラーでスキル集フォルダを格納した状態">
+      <div class="screenshot-caption">ご自身で作成したフォルダの中に、SHIFT AI特典のskills集フォルダを格納する</div>
+    </div>
     <div class="note warning" style="margin-top:14px;">
       <span class="note-icon">⚠️</span>
       <div class="note-body"><strong>フォルダごとではなく、中身を置いてください。</strong>展開したフォルダをそのまま入れると階層がずれてしまいます。</div>
