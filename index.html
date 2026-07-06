@@ -6,9 +6,9 @@
 <title>Claude Code セットアップガイド</title>
 <style>
   :root {
-    --primary: #6366f1;
-    --primary-dark: #4f46e5;
-    --primary-light: #e0e7ff;
+    --primary: #a51e6d;
+    --primary-dark: #7d1653;
+    --primary-light: #f6e9f0;
     --success: #10b981;
     --warning: #f59e0b;
     --danger: #ef4444;
@@ -31,7 +31,7 @@
 
   /* ── ヘッダー ── */
   .header {
-    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+    background: linear-gradient(135deg, #c06299 0%, #a51e6d 100%);
     color: white;
     padding: 48px 24px 40px;
     text-align: center;
@@ -222,7 +222,7 @@
 
   /* ── 完了カード ── */
   .complete-card {
-    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+    background: linear-gradient(135deg, #c06299, #a51e6d);
     color: white; border-radius: var(--radius);
     padding: 32px; margin-top: 48px; text-align: center;
   }
@@ -245,7 +245,7 @@
 
   /* ── 動画ガイドカード ── */
   .video-card {
-    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+    background: linear-gradient(135deg, #c06299 0%, #a51e6d 100%);
     border-radius: var(--radius); padding: 18px;
     margin-bottom: 20px; color: white;
   }
@@ -294,7 +294,6 @@
 <!-- ヘッダー -->
 <div class="header">
   <h1>Claude Code セットアップガイド</h1>
-  <p>ターミナル未経験でも大丈夫。このガイドの手順通りに進めれば完了できます。</p>
   <div class="header-meta">
     <span>💻 Windows / Mac対応</span>
     <span>📋 プログラミング経験不要</span>
@@ -353,6 +352,7 @@
     <button class="os-btn win" onclick="selectOS('win')" id="winBtn">🪟 Windows</button>
     <button class="os-btn mac" onclick="selectOS('mac')" id="macBtn">🍎 Mac</button>
   </div>
+  <a href="#error-help" style="margin-left:8px; padding:8px 16px; border:2px solid #f59e0b; border-radius:8px; background:#fffbeb; color:#b45309; font-size:13px; font-weight:600; text-decoration:none; white-space:nowrap;">😣 エラー対処法</a>
 </div>
 
 <!-- メインコンテンツ（1列スクロール） -->
@@ -484,7 +484,7 @@
       </details>
       <div class="note danger" style="margin-bottom:14px;">
         <span class="note-icon">⚠️</span>
-        <div class="note-body"><strong>「Antigravity 2.0」は選ばないでください。</strong>ダウンロードページには複数の選択肢が表示されますが、必ず「<strong>Antigravity IDE</strong>」（黒いアイコン）を選んでください。</div>
+        <div class="note-body"><strong>「Antigravity 2.0」は選ばないでください。</strong>ダウンロードページには複数の選択肢が表示されますが、必ず「<strong>Antigravity IDE</strong>」を選んでください（バージョン番号は表示時期によって異なります）。</div>
       </div>
       <ol>
         <li><a href="https://antigravity.google/download" target="_blank" rel="noopener"><strong>antigravity.google/download</strong></a> にアクセス</li>
@@ -546,7 +546,7 @@
       </details>
       <div class="note danger" style="margin-bottom:14px;">
         <span class="note-icon">⚠️</span>
-        <div class="note-body"><strong>「Antigravity 2.0」は選ばないでください。</strong>必ず「<strong>Antigravity IDE</strong>」（黒いアイコン）を選んでください。</div>
+        <div class="note-body"><strong>「Antigravity 2.0」は選ばないでください。</strong>必ず「<strong>Antigravity IDE</strong>」を選んでください（バージョン番号は表示時期によって異なります）。</div>
       </div>
       <ol>
         <li><a href="https://antigravity.google/download" target="_blank" rel="noopener"><strong>antigravity.google/download</strong></a> にアクセス</li>
@@ -576,6 +576,18 @@
   </div>
 
   <div class="connector"><div class="connector-line"></div></div>
+
+  <!-- エラー対処法（コマンド入力でつまずく人が多いため、Step3の前に配置） -->
+  <div id="error-help" style="background:#fff7ed; border:1px solid #fdba74; border-radius:12px; padding:24px; margin-bottom:16px;">
+    <h2 style="font-size:18px; margin:0 0 6px;">😣 エラーが出た時の対処方法</h2>
+    <p style="font-size:13px; color:#6b7280; margin:0 0 16px;">この先のコマンド入力でつまずく人が多いです。エラーが出ても焦らなくて大丈夫。以下の手順で自分で解決できます。</p>
+    <ol style="margin:0; padding-left:20px; line-height:2;">
+      <li>エラーが出た箇所を<strong>コピー</strong>する、または<strong>スクリーンショット</strong>を撮る</li>
+      <li>ChatGPTやClaudeのデスクトップ版に貼り付けて「エラーの原因と解決方法を教えてください」と聞く</li>
+      <li>解決方法としてコマンドが表示されるので、その通りに入力する</li>
+      <li>不安な場合は「このコマンドは何をするものですか？」と聞いてから実行するとより安心です</li>
+    </ol>
+  </div>
 
   <!-- ============================
        STEP 3: Claude Code 起動
@@ -687,6 +699,10 @@
         <img src="screenshots/08-auth-success.png" alt="認証成功画面">
         <div class="screenshot-caption">この画面が出たらブラウザは閉じてOK。Antigravityに戻りましょう</div>
       </div>
+      <div class="note tip" style="margin-top:14px;">
+        <span class="note-icon">🎨</span>
+        <div class="note-body"><strong>初回だけ配色（テーマ）選択画面が出ます。</strong>矢印キーで好きな配色を選んでEnter。よく分からなければ、選ばれているものをそのままEnterで進めてOKです。</div>
+      </div>
     </div>
 
     <!-- 3-4 最初の一言 -->
@@ -777,6 +793,10 @@
         <img src="screenshots/08-auth-success.png" alt="認証成功画面">
         <div class="screenshot-caption">この画面が出たらブラウザは閉じてOK</div>
       </div>
+      <div class="note tip" style="margin-top:14px;">
+        <span class="note-icon">🎨</span>
+        <div class="note-body"><strong>初回だけ配色（テーマ）選択画面が出ます。</strong>矢印キーで好きな配色を選んでEnter。よく分からなければ、選ばれているものをそのままEnterで進めてOKです。</div>
+      </div>
     </div>
 
     <!-- 3-4 最初の一言 -->
@@ -864,9 +884,9 @@
 
   <!-- VS Code拡張機能リンク -->
   <div style="background:white; border-radius:12px; padding:24px; margin-top:4px; box-shadow:0 1px 3px rgba(0,0,0,0.06); text-align:center;">
-    <p style="font-size:13px; color:#6b7280; margin-bottom:12px;">さらに便利に使いたい方へ</p>
-    <a href="vscode-extension.html" style="display:inline-flex; align-items:center; gap:8px; background:#6366f1; color:white; text-decoration:none; padding:12px 24px; border-radius:8px; font-weight:700; font-size:14px;">
-      ⚡ VS Code拡張機能の導入ガイドを見る
+    <p style="font-size:13px; color:#6b7280; margin-bottom:12px;">さらに便利に使いたい方へ　※こちらは必須ではありません。必要に応じて導入してください。</p>
+    <a href="vscode-extension.html" style="display:inline-flex; align-items:center; gap:8px; background:#a51e6d; color:white; text-decoration:none; padding:12px 24px; border-radius:8px; font-weight:700; font-size:14px;">
+      ⚡ 拡張機能解説
     </a>
     <p style="font-size:12px; color:#9ca3af; margin-top:10px;">エディタ内から直接Claude Codeに話しかけられるようになります</p>
   </div>

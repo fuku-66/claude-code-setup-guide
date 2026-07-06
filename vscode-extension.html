@@ -6,9 +6,9 @@
 <title>Claude Code for VS Code 拡張機能ガイド</title>
 <style>
   :root {
-    --primary: #6366f1;
-    --primary-dark: #4f46e5;
-    --primary-light: #e0e7ff;
+    --primary: #a51e6d;
+    --primary-dark: #7d1653;
+    --primary-light: #f6e9f0;
     --success: #10b981;
     --gray-50: #f9fafb;
     --gray-100: #f3f4f6;
@@ -28,7 +28,7 @@
 
   /* ── ヘッダー ── */
   .header {
-    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+    background: linear-gradient(135deg, #c06299 0%, #a51e6d 100%);
     color: white;
     padding: 48px 24px 40px;
     text-align: center;
@@ -145,6 +145,14 @@
 </div>
 
 <div class="main">
+
+  <!-- 補足セクション -->
+  <div style="background:#f3f4ff; border:1px solid #c7d2fe; border-radius:12px; padding:20px 24px; margin-bottom:24px; font-size:14px; line-height:1.8; color:#374151;">
+    <p style="margin:0 0 8px;">VSCode、AntigravityなどのIDE上で使用する場合、<br>Claude Codeには2つの使い方があります。</p>
+    <p style="margin:0 0 4px;"><strong>ターミナル版</strong> → IDEのターミナルパネルで動作（コマンドラインUI・英語表記が多め）</p>
+    <p style="margin:0 0 12px;"><strong>拡張機能版</strong>　 → IDEのエディタ上で動作（チャットUI）</p>
+    <p style="margin:0;">同じClaude Codeですが、IDE内で動く場所もUIも異なります。<strong>ターミナルの英語表記が苦手な方</strong>は、こちらの拡張機能版のほうが使いやすい場合があります。ターミナル版で開発を行う際の補助として捉えるのがおすすめです。</p>
+  </div>
 
   <!-- Step 1 -->
   <div class="step-divider">
