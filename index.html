@@ -316,7 +316,7 @@
     <div class="goal-step">
       <span class="icon">💻</span>
       <span class="label">環境を準備</span>
-      <span class="desc">Antigravity を入れて<br>ターミナルを開く</span>
+      <span class="desc">Antigravity IDE を入れて<br>ターミナルを開く</span>
     </div>
     <span class="goal-arrow">→</span>
     <div class="goal-step">
@@ -343,6 +343,10 @@
     </div>
   </div>
   <p class="goal-caption">▲ このゴール画面を目指してセットアップを進めます</p>
+  <div class="note tip" style="max-width:560px;margin:20px auto 0;">
+    <span class="note-icon">💡</span>
+    <div class="note-body">2026年7月現在、デスクトップアプリでも挙動はほとんど変わりません。セットアップにつまづく場合、まずはデスクトップで始めることを推奨しております。</div>
+  </div>
 </div>
 
 <!-- OS スティッキーバー -->
@@ -419,7 +423,7 @@
     </div>
     <div class="step-divider-text">
       <h2>環境を準備する</h2>
-      <p>Antigravityをインストールして、ターミナルを開きます</p>
+      <p>Antigravity IDEをインストールして、ターミナルを開きます</p>
     </div>
   </div>
 
@@ -433,51 +437,9 @@
   <!-- Windows: Step 2 -->
   <div class="win-only">
     <!-- 動画ガイド（Windows） -->
-    <!-- 2-1 Git -->
+    <!-- 2-1 Antigravity IDE -->
     <div class="substep">
-      <h3><span class="sub-num">2-1</span>Gitをインストール（必須）</h3>
-      <div class="note danger">
-        <span class="note-icon">⚠️</span>
-        <div class="note-body">
-          <strong>Gitが入っていないと、Claude Codeのインストールが失敗します。</strong>
-          必ず先にGitを入れてください。
-        </div>
-      </div>
-      <p>Antigravityのターミナルで以下をコピペ → Enter：</p>
-      <div class="code-wrap">
-        <div class="code-block">winget install --id Git.Git -e --source winget</div>
-        <button class="copy-btn" onclick="copyCode(this,'winget install --id Git.Git -e --source winget')">コピー</button>
-      </div>
-      <div class="screenshot">
-        <img src="screenshots/win-git-install.png" alt="Gitインストールコマンドを入力した画面">
-        <div class="screenshot-caption">ターミナルにコマンドを貼り付けてEnterを押す</div>
-      </div>
-      <p style="font-size:13px; color:var(--gray-500);">「すべてのソース契約条件に同意しますか？」と出たら <strong>Y</strong> を押してEnter。</p>
-      <details>
-        <summary>💡 このコマンドは何をしている？</summary>
-        <div class="detail-body">Windowsに標準搭載の winget（パッケージ管理ツール）を使い、Gitを公式ルートでインストールしています。GitはClaude Codeの動作に必要なコンポーネントを含んでいます。</div>
-      </details>
-    </div>
-
-    <!-- 2-2 Node.js -->
-    <div class="substep">
-      <h3><span class="sub-num">2-2</span>Node.jsをインストール</h3>
-      <p>Claude Codeの動作に必要なエンジンです。インストールするだけで、直接触ることはありません。</p>
-      <ol>
-        <li><a href="https://nodejs.org" target="_blank" rel="noopener"><strong>nodejs.org</strong></a> にアクセス</li>
-        <li>「Node.jsを入手」の大きなボタンをクリックしてダウンロード</li>
-        <li>ダウンロードしたファイルをダブルクリック</li>
-        <li>設定はすべてそのまま「Next」でOK → 「Install」→「Finish」</li>
-      </ol>
-      <div class="screenshot">
-        <img src="screenshots/win-07-nodejs-download.png" alt="nodejs.orgのダウンロードページ">
-        <div class="screenshot-caption">「Node.jsを入手」をクリック。LTS版（左下・緑色）が選ばれていればOK</div>
-      </div>
-    </div>
-
-    <!-- 2-3 Antigravity -->
-    <div class="substep">
-      <h3><span class="sub-num">2-3</span>Antigravity IDEをインストール</h3>
+      <h3><span class="sub-num">2-1</span>Antigravity IDEをインストール</h3>
       <details style="margin-bottom:14px;">
         <summary>💡 Antigravity IDEって何？</summary>
         <div class="detail-body">プログラマーが使うエディタの一種です。ターミナル（コマンドを打つ画面）が最初から内蔵されているので、別のアプリを用意する必要がありません。</div>
@@ -511,6 +473,48 @@
         <div class="detail-body">メニューバーの「Terminal」→「New Terminal」をクリック、またはキーボードで <strong>Ctrl + `</strong>（Ctrlキー + バッククォート）を押してください。</div>
       </details>
     </div>
+
+    <!-- 2-2 Git -->
+    <div class="substep">
+      <h3><span class="sub-num">2-2</span>Gitをインストール（必須）</h3>
+      <div class="note danger">
+        <span class="note-icon">⚠️</span>
+        <div class="note-body">
+          <strong>Gitが入っていないと、Claude Codeのインストールが失敗します。</strong>
+          必ずGitを入れてください。
+        </div>
+      </div>
+      <p>Antigravity IDEのターミナルで以下をコピペ → Enter：</p>
+      <div class="code-wrap">
+        <div class="code-block">winget install --id Git.Git -e --source winget</div>
+        <button class="copy-btn" onclick="copyCode(this,'winget install --id Git.Git -e --source winget')">コピー</button>
+      </div>
+      <div class="screenshot">
+        <img src="screenshots/win-git-install.png" alt="Gitインストールコマンドを入力した画面">
+        <div class="screenshot-caption">ターミナルにコマンドを貼り付けてEnterを押す</div>
+      </div>
+      <p style="font-size:13px; color:var(--gray-500);">「すべてのソース契約条件に同意しますか？」と出たら <strong>Y</strong> を押してEnter。</p>
+      <details>
+        <summary>💡 このコマンドは何をしている？</summary>
+        <div class="detail-body">Windowsに標準搭載の winget（パッケージ管理ツール）を使い、Gitを公式ルートでインストールしています。GitはClaude Codeの動作に必要なコンポーネントを含んでいます。</div>
+      </details>
+    </div>
+
+    <!-- 2-3 Node.js -->
+    <div class="substep">
+      <h3><span class="sub-num">2-3</span>Node.jsをインストール</h3>
+      <p>Claude Codeの動作に必要なエンジンです。インストールするだけで、直接触ることはありません。</p>
+      <ol>
+        <li><a href="https://nodejs.org" target="_blank" rel="noopener"><strong>nodejs.org</strong></a> にアクセス</li>
+        <li>「Node.jsを入手」の大きなボタンをクリックしてダウンロード</li>
+        <li>ダウンロードしたファイルをダブルクリック</li>
+        <li>設定はすべてそのまま「Next」でOK → 「Install」→「Finish」</li>
+      </ol>
+      <div class="screenshot">
+        <img src="screenshots/win-07-nodejs-download.png" alt="nodejs.orgのダウンロードページ">
+        <div class="screenshot-caption">「Node.jsを入手」をクリック。LTS版（左下・緑色）が選ばれていればOK</div>
+      </div>
+    </div>
   </div>
 
   <!-- Mac: Step 2 -->
@@ -537,7 +541,7 @@
       </div>
     </div>
 
-    <!-- 2-2 Antigravity (Mac) -->
+    <!-- 2-2 Antigravity IDE (Mac) -->
     <div class="substep">
       <h3><span class="sub-num">2-2</span>Antigravity IDEをインストール</h3>
       <details style="margin-bottom:14px;">
@@ -613,7 +617,7 @@
     <!-- 3-1 インストール -->
     <div class="substep">
       <h3><span class="sub-num">3-1</span>Claude Codeをインストール</h3>
-      <p>Antigravityのターミナル（画面下部）をクリックしてカーソルを置き、コピーボタンで貼り付けてEnterを押してください。</p>
+      <p>Antigravity IDEのターミナル（画面下部）をクリックしてカーソルを置き、コピーボタンで貼り付けてEnterを押してください。</p>
       <div class="code-wrap">
         <div class="code-block">irm https://claude.ai/install.ps1 | iex</div>
         <button class="copy-btn" onclick="copyCode(this,'irm https://claude.ai/install.ps1 | iex')">コピー</button>
@@ -639,7 +643,7 @@
       <div class="note warning">
         <span class="note-icon">⚠️</span>
         <div class="note-body">
-          <strong>この後、Antigravityを一度完全に閉じてください。</strong>
+          <strong>この後、Antigravity IDEを一度完全に閉じてください。</strong>
           アプリごと「×」で閉じる → もう一度起動する。こうしないと設定が反映されません。
         </div>
       </div>
@@ -648,7 +652,7 @@
     <!-- 3-2 確認 -->
     <div class="substep">
       <h3><span class="sub-num">3-2</span>インストールできたか確認</h3>
-      <p>Antigravityを開き直してから、ターミナルに以下を入力：</p>
+      <p>Antigravity IDEを開き直してから、ターミナルに以下を入力：</p>
       <div class="code-wrap">
         <div class="code-block">claude --version</div>
         <button class="copy-btn" onclick="copyCode(this,'claude --version')">コピー</button>
@@ -663,10 +667,10 @@
           <strong>「認識されません」と出た場合（Windowsで一番多い詰まりポイント）</strong>
           <p style="margin-top:12px;"><strong>原因の9割はPATHが通っていないこと</strong>です。以下の順番で試してください。</p>
           <ol style="margin-top:8px;">
-            <li>Antigravityをアプリごと「×」で閉じて再起動する（これで直る人が一番多い）</li>
+            <li>Antigravity IDEをアプリごと「×」で閉じて再起動する（これで直る人が一番多い）</li>
             <li>それでもダメなら、ターミナルで以下を実行：<br>
             <code style="background:var(--gray-100);padding:4px 8px;border-radius:4px;font-family:monospace;display:block;margin-top:8px;">$env:PATH = "$env:USERPROFILE\.local\bin;$env:PATH"</code></li>
-            <li><strong>💡 一番ラクな裏技</strong>：Antigravityの<strong>右側のAIチャット</strong>に、ターミナルに出ているエラーメッセージをコピペして「<strong>パスが通っていません</strong>」と伝える → AIが環境に合わせた修正コマンドを提案してくれます。コマンドの意味がわからなくても大丈夫。</li>
+            <li><strong>💡 一番ラクな裏技</strong>：Antigravity IDEの<strong>右側のAIチャット</strong>に、ターミナルに出ているエラーメッセージをコピペして「<strong>パスが通っていません</strong>」と伝える → AIが環境に合わせた修正コマンドを提案してくれます。コマンドの意味がわからなくても大丈夫。</li>
           </ol>
           <div class="screenshot" style="margin-top:14px;">
             <img src="screenshots/path-error-chat.png" alt="Antigravity IDEのAgentチャットにパスエラーを入力している画面">
@@ -689,7 +693,7 @@
         <li>ブラウザが自動で開く（開かない場合はターミナルに表示されたURLをコピーしてブラウザに貼り付け）</li>
         <li>Step 1で作ったアカウントでログイン</li>
         <li>「Allow（許可）」をクリック</li>
-        <li>ブラウザは閉じてOK。Antigravityに戻ってください</li>
+        <li>ブラウザは閉じてOK。Antigravity IDEに戻ってください</li>
       </ol>
       <div class="screenshot">
         <img src="screenshots/07-claude-allow.png" alt="「Allow」をクリック">
@@ -697,7 +701,7 @@
       </div>
       <div class="screenshot">
         <img src="screenshots/08-auth-success.png" alt="認証成功画面">
-        <div class="screenshot-caption">この画面が出たらブラウザは閉じてOK。Antigravityに戻りましょう</div>
+        <div class="screenshot-caption">この画面が出たらブラウザは閉じてOK。Antigravity IDEに戻りましょう</div>
       </div>
       <div class="note tip" style="margin-top:14px;">
         <span class="note-icon">🎨</span>
@@ -729,7 +733,7 @@
     <!-- 3-1 インストール -->
     <div class="substep">
       <h3><span class="sub-num">3-1</span>Claude Codeをインストール</h3>
-      <p>Antigravityのターミナル（画面下部）をクリックしてカーソルを置き、コピーボタンで貼り付けてEnterを押してください。</p>
+      <p>Antigravity IDEのターミナル（画面下部）をクリックしてカーソルを置き、コピーボタンで貼り付けてEnterを押してください。</p>
       <div class="code-wrap">
         <div class="code-block">curl -fsSL https://claude.ai/install.sh | bash</div>
         <button class="copy-btn" onclick="copyCode(this,'curl -fsSL https://claude.ai/install.sh | bash')">コピー</button>
@@ -779,7 +783,7 @@
         <li>ブラウザが自動で開く（開かない場合はターミナルに表示されたURLをコピーしてブラウザに貼り付け）</li>
         <li>Step 1で作ったアカウントでログイン</li>
         <li>「Allow（許可）」をクリック</li>
-        <li>Antigravityに戻ってください</li>
+        <li>Antigravity IDEに戻ってください</li>
       </ol>
       <div class="screenshot">
         <img src="screenshots/06-claude-auth-login.png" alt="ブラウザでログイン画面">
@@ -828,58 +832,6 @@
     <p style="margin-top:20px; font-size:14px; opacity:0.85;">
       終了するには <code style="background:rgba(255,255,255,0.2);padding:2px 8px;border-radius:4px;">/exit</code> または <strong>Ctrl+C を2回</strong>
     </p>
-  </div>
-
-  <!-- Step 4: スキル集をセットする -->
-  <div class="step-divider">
-    <div class="step-divider-num">
-      <div class="step-divider-circle">4</div>
-      <div class="step-divider-line"></div>
-    </div>
-    <div class="step-divider-text">
-      <h2>スキル集をセットする</h2>
-      <p>配布されたファイルをフォルダに置くだけでAIに指示を覚えさせられます</p>
-    </div>
-  </div>
-
-  <div class="substep">
-    <h3><span class="sub-num">4-1</span>作業フォルダを作る</h3>
-    <p>Claude Codeで使う専用フォルダを用意します。デスクトップや書類フォルダなど、わかりやすい場所に作ってください。</p>
-    <div class="note">
-      <span class="note-icon">💡</span>
-      <div class="note-body">フォルダ名は日本語でもOKですが、<strong>スペースなし・英数字</strong>だとトラブルが少ないです。例：<code style="background:var(--gray-100);padding:2px 6px;border-radius:4px;">my-ai-project</code></div>
-    </div>
-  </div>
-
-  <div class="substep">
-    <h3><span class="sub-num">4-2</span>配布ファイルを展開して置く</h3>
-    <ol>
-      <li>配布された <strong>zip ファイル</strong>をダウンロードする</li>
-      <li>zip を<strong>ダブルクリックで展開</strong>（解凍）する</li>
-      <li>展開してできたフォルダの<strong>中身をすべてコピー</strong>して、4-1 で作った作業フォルダに貼り付ける</li>
-    </ol>
-    <div class="screenshot" style="margin-top:14px;">
-      <img src="screenshots/skills-folder-setup.png" alt="Antigravity IDEのエクスプローラーでスキル集フォルダを格納した状態">
-      <div class="screenshot-caption">ご自身で作成したフォルダの中に、SHIFT AI特典のskills集フォルダを格納する</div>
-    </div>
-    <div class="note warning" style="margin-top:14px;">
-      <span class="note-icon">⚠️</span>
-      <div class="note-body"><strong>フォルダごとではなく、中身を置いてください。</strong>展開したフォルダをそのまま入れると階層がずれてしまいます。</div>
-    </div>
-  </div>
-
-  <div class="substep">
-    <h3><span class="sub-num">4-3</span>作業フォルダで Claude Code を起動する</h3>
-    <p>スキル集は「Claude Code を起動したフォルダ」に置いて初めて有効になります。</p>
-    <ol>
-      <li>Antigravity IDE で <strong>「File」→「Open Folder」</strong> から作業フォルダを開く</li>
-      <li>ターミナルで <code style="background:var(--gray-100);padding:2px 6px;border-radius:4px;font-family:monospace;">claude</code> と入力して起動</li>
-      <li>起動後、<code style="background:var(--gray-100);padding:2px 6px;border-radius:4px;font-family:monospace;">/skills</code> と打つとスキル一覧が表示されます</li>
-    </ol>
-    <div class="note success" style="margin-top:14px;">
-      <span class="note-icon">✅</span>
-      <div class="note-body">スキル名が一覧表示されたら設定完了です。<code style="background:rgba(255,255,255,0.2);padding:1px 6px;border-radius:4px;">/<strong>スキル名</strong></code> で呼び出せます。</div>
-    </div>
   </div>
 
   <!-- VS Code拡張機能リンク -->
