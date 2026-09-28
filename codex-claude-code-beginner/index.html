@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="CodexとClaude Codeを初めて使う人向けの無料相談用カルーセル。">
+  <title>Codex・Claude Code はじめの一歩</title>
+  <style>
+    :root{--navy:#123568;--blue:#0878d1;--pale:#eaf6ff;--ink:#172033;--muted:#5d6b7d;--line:#cfe5f5;--orange:#f27b21;--shadow:0 16px 48px rgba(18,53,104,.13)}
+    *{box-sizing:border-box}html,body{height:100%}body{margin:0;overflow:hidden;color:var(--ink);background:linear-gradient(145deg,#dff3ff,#f8fcff 55%,#dcefff);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic","Noto Sans JP",sans-serif}button{font:inherit}
+    .app{min-height:100%;display:grid;grid-template-rows:34px 1fr 48px;gap:10px;padding:14px 22px}.topbar,.bottombar{width:min(1440px,100%);margin-inline:auto;display:flex;align-items:center;justify-content:space-between;gap:16px}.brand{color:var(--navy);font-weight:900}.hint{color:var(--muted);font-size:.84rem}.stage{min-height:0;display:grid;place-items:center}
+    .deck{position:relative;width:min(1440px,calc((100vh - 126px)*16/9),calc(100vw - 44px));aspect-ratio:16/9;overflow:hidden;background:#fff;border:1px solid rgba(18,53,104,.08);border-radius:20px;box-shadow:var(--shadow)}
+    .slide{position:absolute;inset:0;overflow:hidden;display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:clamp(10px,1.4vw,22px);padding:clamp(28px,3.5vw,58px) clamp(36px,4.5vw,76px) clamp(24px,3vw,46px);opacity:0;visibility:hidden;transform:translateX(22px);transition:opacity .24s ease,transform .24s ease,visibility .24s;background:radial-gradient(circle at 92% 8%,rgba(113,199,244,.22),transparent 28%),linear-gradient(145deg,#fff,#f8fcff)}.slide.active{opacity:1;visibility:visible;transform:none}.slide::after{content:"";position:absolute;right:-10%;bottom:-42%;width:40%;aspect-ratio:1;border:clamp(24px,3vw,44px) solid rgba(8,120,209,.05);border-radius:50%;pointer-events:none}
+    .slide-head,.content,.footer-note{position:relative;z-index:1;min-width:0}.kicker{margin:0 0 8px;color:var(--blue);font-size:clamp(.65rem,1vw,.9rem);font-weight:900;letter-spacing:.12em;text-transform:uppercase}h1,h2{margin:0;color:var(--navy);line-height:1.22;letter-spacing:-.035em}h1{font-size:clamp(1.8rem,4.6vw,4.15rem)}h2{font-size:clamp(1.45rem,3.4vw,3.05rem)}.accent{color:var(--blue)}.orange{color:var(--orange)}.lead{max-width:780px;margin:16px 0 0;color:var(--muted);font-size:clamp(.8rem,1.3vw,1.15rem);line-height:1.65}.content{min-height:0;align-self:stretch}.footer-note{align-self:end;color:var(--muted);font-size:clamp(.62rem,.92vw,.84rem);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .split{height:100%;display:grid;grid-template-columns:1.12fr .88fr;align-items:center;gap:clamp(22px,4vw,64px)}.split.reverse{grid-template-columns:.9fr 1.1fr}.illustration{display:grid;place-items:center;min-width:0;min-height:0;height:100%}.illustration img{display:block;width:100%;height:100%;max-height:100%;object-fit:contain}.copy h3{margin:0 0 12px;color:var(--navy);font-size:clamp(1.2rem,2vw,1.85rem)}.copy p{margin:0;color:var(--muted);font-size:clamp(.78rem,1.2vw,1.04rem);line-height:1.7}.answer-chip{display:inline-block;margin-top:20px;padding:10px 16px;color:var(--navy);background:var(--pale);border:1px solid #a9d7f5;border-radius:999px;font-weight:900;font-size:clamp(.72rem,1.05vw,.94rem)}
+    .cards{height:100%;display:grid;gap:clamp(12px,1.5vw,20px)}.cards.two{grid-template-columns:repeat(2,1fr)}.cards.three{grid-template-columns:repeat(3,1fr)}.card{min-width:0;display:flex;flex-direction:column;justify-content:center;padding:clamp(16px,2vw,28px);background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:0 8px 24px rgba(18,53,104,.07)}.card.blue{background:var(--pale);border-color:#9fd2f2}.card h3{margin:0 0 8px;color:var(--navy);font-size:clamp(.9rem,1.55vw,1.35rem)}.card p{margin:0;color:var(--muted);font-size:clamp(.7rem,1.05vw,.92rem);line-height:1.55}.number{display:grid;place-items:center;width:34px;height:34px;margin-bottom:9px;color:#fff;background:var(--blue);border-radius:50%;font-size:.9rem;font-weight:900}
+    .steps{height:100%;display:grid;grid-template-columns:repeat(5,1fr);align-items:center;gap:clamp(14px,2vw,30px)}.step{position:relative;min-height:112px;display:grid;place-items:center;padding:14px 8px;color:var(--navy);background:var(--pale);border:2px solid #9bcdf5;border-radius:14px;text-align:center;font-size:clamp(.68rem,1vw,.9rem);font-weight:900;line-height:1.5}.step:not(:last-child)::after{content:"→";position:absolute;left:calc(100% + 5px);color:var(--blue);font-size:clamp(1rem,1.8vw,1.5rem)}
+    .prompt{height:100%;display:flex;align-items:center;padding:clamp(20px,2.6vw,34px);color:#f8fbff;background:var(--navy);border-radius:17px;box-shadow:0 12px 30px rgba(18,53,104,.19);font-size:clamp(.7rem,1.08vw,.96rem);line-height:1.65;white-space:pre-line}.prompt b{color:#8ed8ff}
+    .checklist{height:100%;display:grid;grid-template-columns:1fr 1fr;gap:14px}.check{display:flex;align-items:center;gap:12px;padding:14px 18px;color:var(--navy);background:#fff;border:1px solid var(--line);border-radius:13px;font-size:clamp(.76rem,1.1vw,.96rem);font-weight:850;line-height:1.45}.check::before{content:"✓";color:#08775d;font-size:1.1rem;font-weight:1000}
+    .definitions{height:100%;display:grid;grid-template-columns:1fr 1fr;gap:16px}.definition{display:flex;flex-direction:column;justify-content:center;padding:clamp(18px,2.2vw,32px);background:#fff;border:2px solid #9fd2f2;border-radius:16px}.definition.skill{border-color:#ffc896}.definition span{color:var(--blue);font-size:clamp(.72rem,1vw,.9rem);font-weight:900}.definition.skill span{color:var(--orange)}.definition strong{margin-top:10px;color:var(--navy);font-size:clamp(1rem,1.75vw,1.55rem);line-height:1.45}
+    .equation{height:100%;display:grid;grid-template-columns:1fr auto 1fr auto 1.15fr;align-items:center;gap:14px;text-align:center}.eq-box{padding:clamp(18px,2.6vw,34px) 14px;color:var(--navy);background:var(--pale);border:2px solid #a8d9f6;border-radius:16px;font-size:clamp(.92rem,1.6vw,1.35rem);font-weight:900;line-height:1.5}.eq-box.result{color:#fff;background:linear-gradient(145deg,var(--blue),#4bb8ee);border-color:transparent}.operator{color:var(--blue);font-size:clamp(1.3rem,2.5vw,2.3rem);font-weight:1000}
+    .nav-button{width:42px;height:42px;display:grid;place-items:center;color:var(--navy);background:rgba(255,255,255,.94);border:1px solid var(--line);border-radius:50%;box-shadow:0 7px 20px rgba(18,53,104,.1);cursor:pointer}.nav-button:hover{color:#fff;background:var(--blue)}.nav-button:focus-visible{outline:3px solid rgba(8,120,209,.3);outline-offset:3px}.dots{display:flex;justify-content:center;gap:8px;flex:1}.dot{width:9px;height:9px;padding:0;background:#b8d5e8;border:0;border-radius:999px;cursor:pointer;transition:width .2s,background .2s}.dot.active{width:28px;background:var(--blue)}.counter{min-width:62px;color:var(--navy);font-weight:900;text-align:right}
+    @media(max-width:720px){.app{grid-template-rows:26px 1fr 40px;padding:8px;gap:6px}.hint{display:none}.deck{width:min(calc((100vh - 92px)*16/9),calc(100vw - 16px));border-radius:12px}.slide{padding:16px 20px 14px;gap:6px}.footer-note{display:none}.number{width:23px;height:23px;margin-bottom:5px;font-size:.65rem}.card{padding:9px;border-radius:9px}.step{min-height:62px;padding:6px 4px;border-radius:8px;border-width:1px}.checklist{gap:6px}.check{padding:7px 9px;border-radius:8px}.definition{padding:10px;border-radius:9px;border-width:1px}.nav-button{width:34px;height:34px}}
+    @media(prefers-reduced-motion:reduce){.slide,.dot{transition:none}}
+  </style>
+</head>
+<body>
+  <main class="app" aria-label="CodexとClaude Codeの初心者向けカルーセル">
+    <header class="topbar"><div class="brand">Codex × Claude Code 入門</div><div class="hint">← → キー／スワイプで移動</div></header>
+    <div class="stage"><div class="deck" id="deck" aria-live="polite">
+      <section class="slide active" aria-label="1枚目">
+        <div class="content split"><div class="copy"><p class="kicker">Beginner's Guide</p><h1>Codex・Claude Code<br><span class="accent">はじめの一歩</span></h1><p class="lead">ダウンロード後、まず知っておきたいこと。<br>知識がなくても大丈夫です。</p><span class="answer-chip">相談するだけでなく、一緒に作業するAI</span></div><div class="illustration"><img src="assets/hero-collaboration.png" alt="パソコンを使う初心者とAIアシスタントのイラスト"></div></div>
+        <div class="footer-note">まずは専門用語より「安全に頼む型」を覚えればOK</div>
+      </section>
+      <section class="slide" aria-label="2枚目">
+        <header class="slide-head"><p class="kicker">01 / First idea</p><h2>ただ答えるAIから、<br><span class="accent">一緒に作業するAI</span>へ</h2></header>
+        <div class="content cards two"><article class="card"><h3>普通のチャットAI</h3><p>質問に答える<br>文章を考える<br>相談に乗る</p></article><article class="card blue"><h3>Codex・Claude Code</h3><p>ファイルを読む<br>作る・直す<br>結果を確認する</p></article></div>
+        <div class="footer-note">画面は違っても、AIが作業環境で動く点は同じ</div>
+      </section>
+      <section class="slide" aria-label="3枚目">
+        <header class="slide-head"><p class="kicker">02 / Workspace</p><h2>作業フォルダは、<span class="accent">AIに渡す机</span></h2></header>
+        <div class="content split reverse"><div class="illustration"><img src="assets/work-folder.png" alt="安全に整理された作業フォルダのイラスト"></div><div class="cards three"><article class="card"><div class="number">1</div><h3>分ける</h3><p>仕事ごとに専用フォルダ</p></article><article class="card"><div class="number">2</div><h3>コピー</h3><p>元データは残して試す</p></article><article class="card"><div class="number">3</div><h3>保存先</h3><p>成果物の場所を決める</p></article></div></div>
+        <div class="footer-note">見てよい範囲をフォルダで分けると安心</div>
+      </section>
+      <section class="slide" aria-label="4枚目">
+        <header class="slide-head"><p class="kicker">03 / Copy & paste</p><h2>最初は、この頼み方で<span class="accent">OK</span></h2></header>
+        <div class="content prompt"><b>このフォルダの中を確認してください。</b>
+
+目的：〇〇を作りたいです。
+私は初心者なので、難しい言葉は簡単に説明してください。
+変更してよいのは、このフォルダの中だけです。
+元ファイルは削除しないでください。
+
+作業後に、保存場所と確認結果を教えてください。</div>
+        <div class="footer-note">目的・範囲・完成・確認をセットにする</div>
+      </section>
+      <section class="slide" aria-label="5枚目">
+        <header class="slide-head"><p class="kicker">04 / Safety</p><h2>初心者が守るのは、<span class="accent">4つだけ</span></h2></header>
+        <div class="content checklist"><div class="check">パスワードや秘密情報を貼らない</div><div class="check">最初はコピーしたデータで試す</div><div class="check">削除・送信・公開は実行前に確認</div><div class="check">最後にファイルを自分でも見る</div></div>
+        <div class="footer-note">迷ったときは「まだ変更せず、まず説明して」と頼む</div>
+      </section>
+      <section class="slide" aria-label="6枚目">
+        <header class="slide-head"><p class="kicker">05 / The big shift</p><h2>ここが分かると、<span class="orange">使い方が変わる</span></h2></header>
+        <div class="content split"><div class="definitions"><article class="definition"><span>エージェント</span><strong>自分で手順を考えて<br>動く担当者</strong></article><article class="definition skill"><span>スキル</span><strong>担当者に渡す<br>専門マニュアル</strong></article></div><div class="illustration"><img src="assets/agent-and-skill.png" alt="マニュアルと道具を持って目的地へ進むAIエージェントのイラスト"></div></div>
+        <div class="footer-note">一言でいうと、エージェントは担当者、スキルは専門マニュアル</div>
+      </section>
+      <section class="slide" aria-label="7枚目">
+        <div class="content split"><div class="copy"><p class="kicker">06 / First action</p><h2>まずは、小さな仕事を<br><span class="accent">1つ頼んでみる</span></h2><p class="lead">最初から完璧な指示は必要ありません。<br>結果を見て、追加で直してもらえば大丈夫です。</p><span class="answer-chip">「このフォルダを見て、できることを3つ提案して」</span></div><div class="illustration"><img src="assets/hero-collaboration.png" alt="AIと一緒に作業を始める初心者のイラスト"></div></div>
+        <div class="footer-note">相談 → 小さく実行 → 確認 → 改善</div>
+      </section>
+    </div></div>
+    <nav class="bottombar" aria-label="スライド操作"><button class="nav-button" id="prev" type="button" aria-label="前のスライド">←</button><div class="dots" id="dots" aria-label="スライド一覧"></div><button class="nav-button" id="next" type="button" aria-label="次のスライド">→</button><div class="counter"><span id="current">1</span> / <span id="total">7</span></div></nav>
+  </main>
+  <script>
+    const slides=[...document.querySelectorAll('.slide')],dots=document.getElementById('dots'),current=document.getElementById('current'),total=document.getElementById('total');let index=0;total.textContent=slides.length;
+    slides.forEach((_,i)=>{const dot=document.createElement('button');dot.className='dot'+(i===0?' active':'');dot.type='button';dot.setAttribute('aria-label',`${i+1}枚目へ移動`);dot.addEventListener('click',()=>show(i));dots.appendChild(dot)});
+    function show(nextIndex){index=(nextIndex+slides.length)%slides.length;slides.forEach((slide,i)=>slide.classList.toggle('active',i===index));[...dots.children].forEach((dot,i)=>dot.classList.toggle('active',i===index));current.textContent=index+1;document.title=`${index+1}/${slides.length} Codex・Claude Code はじめの一歩`}
+    document.getElementById('prev').addEventListener('click',()=>show(index-1));document.getElementById('next').addEventListener('click',()=>show(index+1));document.addEventListener('keydown',event=>{if(['ArrowRight','PageDown',' '].includes(event.key)){event.preventDefault();show(index+1)}if(['ArrowLeft','PageUp'].includes(event.key)){event.preventDefault();show(index-1)}if(event.key==='Home')show(0);if(event.key==='End')show(slides.length-1)});
+    let touchStartX=0;document.getElementById('deck').addEventListener('touchstart',event=>{touchStartX=event.changedTouches[0].screenX},{passive:true});document.getElementById('deck').addEventListener('touchend',event=>{const distance=event.changedTouches[0].screenX-touchStartX;if(Math.abs(distance)>50)show(index+(distance<0?1:-1))},{passive:true});window.__showSlide=show;
+  </script>
+</body>
+</html>
